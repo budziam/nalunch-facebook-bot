@@ -57,7 +57,7 @@ describe("Webhook collection", () => {
             expect(res.statusCode).toBe(HTTP_STATUS_OK);
             expect(res._getData()).toBe("EVENT_RECEIVED");
             expect(api.sendMessage).toBeCalledWith(psid, {
-                text: "Witam!",
+                text: "Dzień dobry!",
             });
         });
     });
