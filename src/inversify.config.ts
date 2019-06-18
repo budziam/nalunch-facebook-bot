@@ -4,6 +4,7 @@ import * as env from "node-env-file";
 import { Container } from "inversify";
 import { WebhookCollection } from "./http/controllers/WebhookCollection";
 import { Config, ConfigKey } from "./Config";
+import { WebhookHandler } from "./bus/WebhookHandler";
 
 export const createContainer = (): Container => {
     env(`${__dirname}/../.env`);

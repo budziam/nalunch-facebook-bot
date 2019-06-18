@@ -1,10 +1,11 @@
 import { boundClass } from "autobind-decorator";
 import * as bodyParser from "body-parser";
 import * as express from "express";
+// tslint:disable-next-line:no-duplicate-imports
 import { Express, NextFunction, Request, Response } from "express";
-import * as http from "http";
-import { Server } from "http";
+import { createServer, Server } from "http";
 import { Container, injectable } from "inversify";
+import * as winston from "winston";
 import { ErrorHandler } from "./ErrorHandler";
 import { getRoutes } from "./routes";
 import { EndpointNotFoundError } from "./http/errors";
@@ -32,10 +33,9 @@ export class ServerHttp {
     }
 
     public start(): void {
-        this.server = http
-            .createServer(this.app)
+        this.server = createServer(this.app)
             .listen(this.port)
-            .on("listening", () => console.info("Server HTTP is listening."))
+            .on("listening", () => winston.info("Server HTTP is listening."))
             .on("error", this.errorHandler.handle);
     }
 

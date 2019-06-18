@@ -8,14 +8,8 @@ export const getRoutes = (container: Container): Router => {
 
     const webhookCollection = container.get<WebhookCollection>(WebhookCollection);
 
-    router.get(
-        "/webhook",
-        controllerHandler(webhookCollection.post),
-    );
-    router.post(
-        "/webhook",
-        controllerHandler(webhookCollection.post),
-    );
+    router.get("/webhook", controllerHandler(webhookCollection.get));
+    router.post("/webhook", controllerHandler(webhookCollection.post));
 
     return router;
 };

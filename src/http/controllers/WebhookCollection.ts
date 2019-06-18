@@ -1,18 +1,23 @@
-import { boundClass } from "autobind-decorator";
+import { boundClass, boundMethod } from "autobind-decorator";
 import { Request, Response } from "express";
 import { injectable } from "inversify";
+import * as winston from "winston";
+import * as http2 from "http2";
+const { HTTP_STATUS_OK, HTTP_STATUS_FORBIDDEN, HTTP_STATUS_UNPROCESSABLE_ENTITY } = http2.constants;
 import { EndpointNotFoundError } from "../errors";
+import { WebhookHandler } from "../../bus/WebhookHandler";
 
 @injectable()
 @boundClass
 export class WebhookCollection {
-    constructor(
+    public constructor(
         private readonly webhookHandler: WebhookHandler,
         private readonly token: string,
     ) {
         //
     }
 
+    @boundMethod
     public async get(req: Request, res: Response): Promise<any> {
         // Your verify token. Should be a random string.
         const VERIFY_TOKEN = this.token;
@@ -24,20 +29,21 @@ export class WebhookCollection {
 
         // Checks if a token and mode is in the query string of the request
         if (!mode || !token) {
-            return res.sendStatus(422);
+            return res.sendStatus(HTTP_STATUS_UNPROCESSABLE_ENTITY);
         }
 
         // Checks the mode and token sent is correct
         if (mode === "subscribe" && token === VERIFY_TOKEN) {
             // Responds with the challenge token from the request
-            console.info("WEBHOOK_VERIFIED");
-            res.status(200).send(challenge);
+            winston.info("WEBHOOK_VERIFIED");
+            res.status(HTTP_STATUS_OK).send(challenge);
         } else {
             // Responds with '403 Forbidden' if verify tokens do not match
-            res.sendStatus(403);
+            res.sendStatus(HTTP_STATUS_FORBIDDEN);
         }
     }
 
+    @boundMethod
     public async post(req: Request, res: Response): Promise<any> {
         const body = req.body;
 
@@ -54,6 +60,6 @@ export class WebhookCollection {
         }
 
         // Returns a '200 OK' response to all requests
-        res.status(200).send("EVENT_RECEIVED");
+        res.status(HTTP_STATUS_OK).send("EVENT_RECEIVED");
     }
 }

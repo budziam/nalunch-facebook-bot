@@ -1,5 +1,5 @@
-import * as raven from "raven";
 import * as winston from "winston";
+import * as raven from "raven";
 import * as winstonGraylog from "winston-graylog2";
 import { Config, ConfigKey } from "./Config";
 

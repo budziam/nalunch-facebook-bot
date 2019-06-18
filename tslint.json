@@ -10,15 +10,23 @@
     "tslint-config-prettier"
   ],
   "rules": {
+    "ban-ts-ignore": false,
+    "comment-format": false,
     "completed-docs": false,
     "file-name-casing": [
       true,
       "camel-case",
       "pascal-case"
     ],
+    "interface-name": false,
+    "no-any": false,
     "no-console": false,
     "no-import-side-effect": false,
+    "no-parameter-properties": false,
+    "no-unbound-method": false,
     "no-unsafe-any": false,
+    "no-void-expression": false,
+    "object-literal-sort-keys": false,
     "ordered-imports": false,
     "prefer-function-over-method": false,
     "strict-boolean-expressions": false,
@@ -26,10 +34,15 @@
       true,
       "call-signature",
       "parameter",
-      "arrow-parameter",
       "property-declaration",
       "member-variable-declaration",
       "array-destructuring"
+    ],
+    "variable-name": [
+      true,
+      "allow-leading-underscore",
+      "ban-keywords",
+      "check-format"
     ]
   }
 }
