@@ -17,10 +17,10 @@ describe("Webhook collection", () => {
 
     beforeEach(() => {
         container = setup();
-        app = container.get<ServerHttp>(ServerHttp).app;
         res = createResponse();
         api = createMockInstance(Api);
         container.bind(Api).toConstantValue(api);
+        app = container.get<ServerHttp>(ServerHttp).app;
     });
 
     describe("POST", () => {
