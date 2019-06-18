@@ -50,6 +50,8 @@ export class ActionChoiceController implements EventController {
     private async locationChosen(client: Client, location: Coordinates): Promise<void> {
         client.moveToState(ClientState.ListBusinesses);
         client.location = location;
+
+        // TODO Implement
         return this.bus.send(
             client,
             `Tutaj powinny się wyświetlić restauracje w okolicy ${client.location.latitude},${client.location.longitude}`,

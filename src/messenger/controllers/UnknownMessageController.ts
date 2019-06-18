@@ -10,6 +10,7 @@ export class UnknownMessageController implements EventController {
     }
 
     public async handle(client: Client, event: IncomingEvent): Promise<void> {
+        // TODO Handle it
         await this.bus.send(client, "Nie wiem co zrobić :|");
     }
 }

@@ -12,7 +12,7 @@ export class Bus {
     public async send(client: Client, message: string | OutcomingMessage): Promise<void>;
     public async send(client: Client, message: any): Promise<void> {
         if (typeof message === "string") {
-            await this.api.sendMessage(client.psid, {
+            return this.api.sendMessage(client.psid, {
                 text: message,
             });
         }
