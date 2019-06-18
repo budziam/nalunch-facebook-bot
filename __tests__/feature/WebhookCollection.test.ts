@@ -5,7 +5,7 @@ import createMockInstance from "jest-create-mock-instance";
 import * as http2 from "http2";
 import { ServerHttp } from "../../src/ServerHttp";
 import { makeRequest, setup } from "../utils";
-import { Api } from "../../src/bus/Api";
+import { Api } from "../../src/messenger/Api";
 
 const { HTTP_STATUS_OK } = http2.constants;
 

@@ -5,7 +5,7 @@ import * as winston from "winston";
 import * as http2 from "http2";
 const { HTTP_STATUS_OK, HTTP_STATUS_FORBIDDEN, HTTP_STATUS_UNPROCESSABLE_ENTITY } = http2.constants;
 import { EndpointNotFoundError } from "../errors";
-import { WebhookHandler } from "../../bus/WebhookHandler";
+import { WebhookHandler } from "../../messenger/WebhookHandler";
 
 @injectable()
 @boundClass
