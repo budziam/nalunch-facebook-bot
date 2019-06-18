@@ -19,7 +19,7 @@ export class ServerHttp {
     public constructor(
         private readonly container: Container,
         private readonly errorHandler: ErrorHandler,
-        private readonly port: number = 8000,
+        private readonly port: number = 9000,
     ) {
         //
     }
