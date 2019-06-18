@@ -19,7 +19,7 @@ describe("Webhook collection", () => {
         container = setup();
         res = createResponse();
         api = createMockInstance(Api);
-        container.bind(Api).toConstantValue(api);
+        container.rebind(Api).toConstantValue(api);
         app = container.get<ServerHttp>(ServerHttp).app;
     });
 
