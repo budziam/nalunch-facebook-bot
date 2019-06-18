@@ -1,6 +1,6 @@
 FROM node:12
 
-EXPOSE 9000
+EXPOSE 8020
 
 COPY . /app
 WORKDIR /app
