@@ -1,0 +1,35 @@
+{
+  "lintOptions": {
+    "typeCheck": true
+  },
+  "exclude": [
+    "**/*.js"
+  ],
+  "extends": [
+    "tslint:all",
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "completed-docs": false,
+    "file-name-casing": [
+      true,
+      "camel-case",
+      "pascal-case"
+    ],
+    "no-console": false,
+    "no-import-side-effect": false,
+    "no-unsafe-any": false,
+    "ordered-imports": false,
+    "prefer-function-over-method": false,
+    "strict-boolean-expressions": false,
+    "typedef": [
+      true,
+      "call-signature",
+      "parameter",
+      "arrow-parameter",
+      "property-declaration",
+      "member-variable-declaration",
+      "array-destructuring"
+    ]
+  }
+}
