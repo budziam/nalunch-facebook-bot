@@ -61,10 +61,10 @@ export class ActionChoiceController implements EventController {
     private async displayActions(client: Client): Promise<void> {
         await this.bus.send(
             client,
-            `Cześć ${client.profile.firstName}! Chętnie pomogę Ci znaleźć lunch 🥡 w Twojej okolicy. Wystarczy, że podasz mi swoją lokalizacje 📍`,
+            `Cześć ${client.profile.firstName}! Chętnie pomogę Ci znaleźć lunch 🍲 w Twojej okolicy. Wystarczy, że podasz mi swoją lokalizacje 📍`,
         );
         await this.bus.send(client, {
-            text: "A może mogę Ci jakoś inaczej pomóc?",
+            text: "A może mogę Ci pomóc w inny sposób?",
             quick_replies: ACTION_CHOICE_REPLIES,
         });
     }
