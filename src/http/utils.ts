@@ -1,6 +1,6 @@
 import { NextFunction, RequestHandler } from "express";
 
-export const Termination = Symbol.for("Termination");
+export const TERMINATION = Symbol.for("Termination");
 
 export const asyncHandler = (callback: RequestHandler): RequestHandler => async (
     ...args
@@ -22,7 +22,7 @@ export const controllerHandler = (callback: RequestHandler): RequestHandler => a
 
     try {
         await callback(...args);
-        next(Termination);
+        next(TERMINATION);
     } catch (e) {
         next(e);
     }

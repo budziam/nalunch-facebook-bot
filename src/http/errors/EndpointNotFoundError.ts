@@ -1,5 +1,5 @@
 export class EndpointNotFoundError extends Error {
-    constructor() {
+    public constructor() {
         super("EndpointNotFoundError");
     }
 }
