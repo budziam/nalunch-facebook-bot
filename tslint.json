@@ -19,9 +19,12 @@
       "pascal-case"
     ],
     "interface-name": false,
+    "member-ordering": false,
+    "newline-before-return": false,
     "no-any": false,
     "no-console": false,
     "no-import-side-effect": false,
+    "no-magic-numbers": false,
     "no-parameter-properties": false,
     "no-unbound-method": false,
     "no-unsafe-any": false,
@@ -35,8 +38,7 @@
       "call-signature",
       "parameter",
       "property-declaration",
-      "member-variable-declaration",
-      "array-destructuring"
+      "member-variable-declaration"
     ],
     "variable-name": [
       true,
