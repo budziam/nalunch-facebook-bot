@@ -5,6 +5,7 @@ import * as winston from "winston";
 import * as http2 from "http2";
 const { HTTP_STATUS_INTERNAL_SERVER_ERROR, HTTP_STATUS_NOT_FOUND } = http2.constants;
 import { EndpointNotFoundError } from "./http/errors";
+import { Termination } from "./http/utils";
 
 @boundClass
 @injectable()
@@ -14,6 +15,10 @@ export class ErrorHandler {
     }
 
     public handleHttpError(e: any, req: Request, res: Response): Response | undefined {
+        if (e === Termination) {
+            return undefined;
+        }
+
         if (e instanceof EndpointNotFoundError) {
             return res.sendStatus(HTTP_STATUS_NOT_FOUND);
         }

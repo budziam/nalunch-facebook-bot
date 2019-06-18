@@ -34,6 +34,8 @@ export class Api {
             message,
         };
 
+        console.log("Joł");
+
         await this.axios.post(url, data);
     }
 
