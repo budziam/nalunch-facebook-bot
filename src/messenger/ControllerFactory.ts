@@ -1,11 +1,15 @@
-import { Client } from "../client/Client";
+import { Client, ClientState } from "../client/Client";
 import { EventController, IncomingEvent } from "./types";
 import { Container, injectable } from "inversify";
-import { MessageController } from "./controllers/MessageController";
 import { PostbackController } from "./controllers/PostbackController";
 import { FallbackController } from "./controllers/FallbackController";
 import { ReferralController } from "./controllers/ReferralController";
 import { PassControlController } from "./controllers/PassControlController";
+import { equals } from "./utils";
+import { SiemkaController } from "./controllers/SiemkaController";
+import { CancelController } from "./controllers/CancelController";
+import { UnknownMessageController } from "./controllers/UnknownMessageController";
+import { ActionChoiceController } from "./controllers/ActionChoiceController";
 
 @injectable()
 export class ControllerFactory {
@@ -15,7 +19,21 @@ export class ControllerFactory {
 
     public create(client: Client, event: IncomingEvent): EventController {
         if (event.message) {
-            return this.container.get(MessageController);
+            event.message.text = event.message.text ? event.message.text.trim() : "";
+
+            if (equals(event.message.text, "siemka")) {
+                return this.container.get(SiemkaController);
+            }
+
+            if (equals(event.message.text, "anuluj")) {
+                return this.container.get(CancelController);
+            }
+
+            if (client.state === ClientState.ActionChoice) {
+                return this.container.get(ActionChoiceController);
+            }
+
+            return this.container.get(UnknownMessageController);
         }
 
         if (event.postback) {

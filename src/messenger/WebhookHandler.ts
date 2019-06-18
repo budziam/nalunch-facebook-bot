@@ -3,10 +3,12 @@ import * as winston from "winston";
 import { IncomingEvent } from "./types";
 import { ClientManager } from "../client/ClientManager";
 import { ControllerFactory } from "./ControllerFactory";
+import { Api } from "./Api";
 
 @injectable()
 export class WebhookHandler {
     public constructor(
+        private readonly api: Api,
         private readonly clientManager: ClientManager,
         private readonly controllerFactory: ControllerFactory,
     ) {
@@ -22,6 +24,11 @@ export class WebhookHandler {
 
         try {
             const client = this.clientManager.get(event.sender.id);
+
+            if (!client.profile) {
+                client.profile = await this.api.getProfile(client.psid);
+            }
+
             const controller = this.controllerFactory.create(client, event);
             await controller.handle(client, event);
         } catch (e) {

@@ -1,14 +1,15 @@
 import { injectable } from "inversify";
-import * as winston from "winston";
 import { EventController, IncomingEvent } from "../types";
 import { Client } from "../../client/Client";
+import { Bus } from "../Bus";
 
 @injectable()
-export class PassControlController implements EventController {
+export class UnknownMessageController implements EventController {
+    public constructor(private readonly bus: Bus) {
+        //
+    }
+
     public async handle(client: Client, event: IncomingEvent): Promise<void> {
-        winston.info("Pass thread control", {
-            client_psid: client.psid,
-            event,
-        });
+        await this.bus.send(client, "Nie wiem co zrobić :|");
     }
 }
