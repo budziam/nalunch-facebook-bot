@@ -30,9 +30,16 @@ export interface OutcomingMessage {
     text: string;
 }
 
+export enum ContentType {
+    Text = "text",
+    Location = "location",
+    UserPhoneNumber = "user_phone_number",
+    UserEmail = "user_email",
+}
+
 export interface QuickReply {
-    content_type: string;
+    content_type: ContentType;
     image_url?: string;
-    payload: string;
-    title: string;
+    payload?: string;
+    title?: string;
 }

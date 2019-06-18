@@ -2,7 +2,7 @@ import { Psid } from "../bus/types";
 import { boundMethod } from "autobind-decorator";
 
 export enum ClientState {
-    Start = 1,
+    ActionChoice = 1,
 }
 
 export interface ClientProfile {
@@ -12,6 +12,14 @@ export interface ClientProfile {
 }
 
 export class Client {
+    private _profile?: ClientProfile;
+    private readonly _psid: Psid;
+    private _state: ClientState = ClientState.ActionChoice;
+
+    public constructor(psid: Psid) {
+        this._psid = psid;
+    }
+
     public get profile(): ClientProfile | undefined {
         return this._profile;
     }
@@ -22,13 +30,6 @@ export class Client {
 
     public get state(): ClientState {
         return this._state;
-    }
-    private _profile?: ClientProfile;
-    private readonly _psid: Psid;
-    private _state: ClientState = ClientState.Start;
-
-    public constructor(psid: Psid) {
-        this._psid = psid;
     }
 
     public moveToState(newState: ClientState): void {

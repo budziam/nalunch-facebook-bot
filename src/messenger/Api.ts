@@ -34,7 +34,17 @@ export class Api {
             message,
         };
 
-        console.log("Joł");
+        await this.axios.post(url, data);
+    }
+
+    public async passThreadControl(psid: string): Promise<void> {
+        const url = this.to("/me/pass_thread_control");
+        const data = {
+            recipient: {
+                id: psid,
+            },
+            target_app_id: 263902037430900,
+        };
 
         await this.axios.post(url, data);
     }
