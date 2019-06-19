@@ -1,7 +1,6 @@
 import { boundClass } from "autobind-decorator";
 import * as bodyParser from "body-parser";
 import * as express from "express";
-// tslint:disable-next-line:no-duplicate-imports
 import { Express, NextFunction, Request, Response } from "express";
 import { createServer, Server } from "http";
 import { Container, injectable } from "inversify";

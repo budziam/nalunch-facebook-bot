@@ -1,6 +1,6 @@
-import { Psid } from "../bus/types";
 import { Client } from "./Client";
 import { injectable } from "inversify";
+import { Psid } from "../messenger/types";
 
 @injectable()
 export class ClientManager {

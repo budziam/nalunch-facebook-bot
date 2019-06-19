@@ -5,7 +5,7 @@ import createMockInstance from "jest-create-mock-instance";
 import * as http2 from "http2";
 import { ServerHttp } from "../../src/ServerHttp";
 import { makeRequest, setup } from "../utils";
-import { Api } from "../../src/bus/Api";
+import { FacebookApi } from "../../src/api/FacebookApi";
 
 const { HTTP_STATUS_OK } = http2.constants;
 
@@ -13,14 +13,14 @@ describe("Webhook collection", () => {
     let container: Container;
     let app: Express;
     let res: MockResponse<Response>;
-    let api: jest.Mocked<Api>;
+    let api: jest.Mocked<FacebookApi>;
 
     beforeEach(() => {
         container = setup();
-        app = container.get<ServerHttp>(ServerHttp).app;
         res = createResponse();
-        api = createMockInstance(Api);
-        container.bind(Api).toConstantValue(api);
+        api = createMockInstance(FacebookApi);
+        container.rebind(FacebookApi).toConstantValue(api);
+        app = container.get<ServerHttp>(ServerHttp).app;
     });
 
     describe("POST", () => {
@@ -57,7 +57,7 @@ describe("Webhook collection", () => {
             expect(res.statusCode).toBe(HTTP_STATUS_OK);
             expect(res._getData()).toBe("EVENT_RECEIVED");
             expect(api.sendMessage).toBeCalledWith(psid, {
-                text: "Witam!",
+                text: "Dzień dobry!",
             });
         });
     });

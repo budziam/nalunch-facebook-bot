@@ -7,8 +7,22 @@ export interface MessageQuickReply {
 }
 
 export interface EventMessage {
+    mid: string;
     quick_reply?: MessageQuickReply;
-    text: string;
+    text?: string;
+    attachments?: Attachment[];
+}
+
+export interface Attachment {
+    title: string;
+    url: string;
+    type: "location";
+    payload: {
+        coordinates: {
+            lat: number;
+            long: number;
+        };
+    };
 }
 
 export interface IncomingEvent {
@@ -23,16 +37,4 @@ export interface IncomingEvent {
 
 export interface EventController {
     handle(client: Client, event: IncomingEvent): Promise<void>;
-}
-
-export interface OutcomingMessage {
-    quick_replies?: QuickReply[];
-    text: string;
-}
-
-export interface QuickReply {
-    content_type: string;
-    image_url?: string;
-    payload: string;
-    title: string;
 }
