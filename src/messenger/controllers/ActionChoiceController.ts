@@ -10,7 +10,7 @@ import { LunchOfferComposer } from "../../LunchOfferComposer";
 const extractLocation = (event: IncomingEvent): Coordinates | undefined => {
     const attachments = event.message.attachments;
 
-    if (attachments && attachments[0] && attachments[0].type === "position") {
+    if (attachments && attachments[0] && attachments[0].type === "location") {
         return {
             latitude: attachments[0].payload.coordinates.lat,
             longitude: attachments[0].payload.coordinates.long,

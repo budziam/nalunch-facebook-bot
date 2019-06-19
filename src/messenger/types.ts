@@ -16,7 +16,7 @@ export interface EventMessage {
 export interface Attachment {
     title: string;
     url: string;
-    type: "position";
+    type: "location";
     payload: {
         coordinates: {
             lat: number;
