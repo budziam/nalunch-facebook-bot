@@ -5,7 +5,7 @@ import { Bus } from "../Bus";
 import { ACTION_CHOICE_REPLIES, ActionChoicePayload } from "../constants";
 import { equals } from "../utils";
 import { Coordinates } from "chunk";
-import { LunchOfferComposer } from "../../LunchOfferComposer";
+import { LunchOfferComposerFactory } from "../../lunchOffer/LunchOfferComposerFactory";
 
 const extractLocation = (event: IncomingEvent): Coordinates | undefined => {
     const attachments = event.message.attachments;
@@ -24,7 +24,7 @@ const extractLocation = (event: IncomingEvent): Coordinates | undefined => {
 export class ActionChoiceController implements EventController {
     public constructor(
         private readonly bus: Bus,
-        private readonly lunchOfferComposer: LunchOfferComposer,
+        private readonly lunchOfferComposerFactory: LunchOfferComposerFactory,
     ) {
         //
     }
@@ -55,9 +55,8 @@ export class ActionChoiceController implements EventController {
         client.moveToState(ClientState.ListBusinesses);
         client.position = location;
 
-        const message = await this.lunchOfferComposer.composeFor(client);
+        const message = await this.lunchOfferComposerFactory.create(client).compose();
 
-        // TODO Implement
         return this.bus.send(client, message);
     }
 

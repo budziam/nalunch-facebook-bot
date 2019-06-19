@@ -1,7 +1,7 @@
 import { Container } from "inversify";
 import { setup } from "../utils";
-import { LunchOfferComposer } from "../../src/LunchOfferComposer";
 import { Client } from "../../src/client/Client";
+import { LunchOfferComposerFactory } from "../../src/lunchOffer/LunchOfferComposerFactory";
 
 describe("Lunch offer composer", () => {
     let container: Container;
@@ -17,7 +17,10 @@ describe("Lunch offer composer", () => {
             longitude: 19.9449799,
         };
 
-        const message = await container.get(LunchOfferComposer).composeFor(client);
+        const message = await container
+            .get<LunchOfferComposerFactory>(LunchOfferComposerFactory)
+            .create(client)
+            .compose();
 
         console.log(message);
     });

@@ -1839,9 +1839,10 @@ has@^1.0.1, has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-"haversine-distance@git+https://github.com/dcousens/haversine-distance.git#master":
+haversine-distance@^1.1.4:
   version "1.1.4"
-  resolved "git+https://github.com/dcousens/haversine-distance.git#18caa412b25239e517e8bc219d4947ebc0e3020d"
+  resolved "https://registry.yarnpkg.com/haversine-distance/-/haversine-distance-1.1.4.tgz#78578c5623e75f2d791d954ca947731986b95591"
+  integrity sha512-ElW49a3HbKhoIlFQ7gGvazYyi9etz5e1hrUDS/Z9MCvtm5iQm1YAvd9Rx8Oy121h+0X7PbsjBBRKDH4Otr0JuA==
 
 hosted-git-info@^2.1.4:
   version "2.7.1"

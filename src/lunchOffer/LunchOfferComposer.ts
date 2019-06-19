@@ -1,8 +1,10 @@
 import { ChunkCollectionStore, Food, LunchOffer } from "chunk";
 import * as moment from "moment";
+// @ts-ignore
 import * as haversineDistance from "haversine-distance";
-import { Client } from "./client/Client";
 import { injectable } from "inversify";
+import { boundMethod } from "autobind-decorator";
+import { Client } from "../client/Client";
 
 const MAX_LUNCH_OFFERS = 5;
 
@@ -30,27 +32,9 @@ const compare = (a: any, b: any, asc: boolean = true): number => {
     return 0;
 };
 
-const compareByDistance = (a: LunchOffer, b: LunchOffer, client: Client): number => {
-    // @ts-ignore
-    const aDistance = haversineDistance(client.position, a.business.location.coordinates);
-    // @ts-ignore
-    const bDistance = haversineDistance(client.position, b.business.location.coordinates);
-    return compare(aDistance, bDistance, true);
-};
-
 const canTake = (lunchOffer: LunchOffer): boolean => fitsDate(lunchOffer) && !lunchOffer.isEmpty;
 
 const fitsDate = (lunchOffer: LunchOffer): boolean => moment().isSame(lunchOffer.date, "day");
-
-const formatLunchOffer = (lunchOffer: LunchOffer, client: Client): string => {
-    const { business, foods } = lunchOffer;
-    // @ts-ignore
-    const meters = haversineDistance(client.position, lunchOffer.business.location.coordinates);
-    const distance = formatDistance(meters);
-    return `${business.name} - ${business.address} - ${distance}\n${foods
-        .map(formatFood)
-        .join("\n")}`;
-};
 
 const formatDistance = (meters: number): string => {
     const roundedMeters = Math.round(meters);
@@ -68,18 +52,42 @@ const formatFood = (food: Food): string => `- ${food.name}`;
 
 @injectable()
 export class LunchOfferComposer {
-    public constructor(private readonly chunkCollectionStore: ChunkCollectionStore) {
+    public constructor(
+        private readonly chunkCollectionStore: ChunkCollectionStore,
+        private readonly client: Client,
+    ) {
         //
     }
 
-    public async composeFor(client: Client): Promise<string> {
-        await this.chunkCollectionStore.load(client.position, moment(), 5000);
+    public async compose(): Promise<string> {
+        await this.chunkCollectionStore.load(this.client.position, moment(), 5000);
 
         return this.chunkCollectionStore.lunchOffers
             .filter(canTake)
-            .sort((a: LunchOffer, b: LunchOffer) => compareByDistance(a, b, client))
+            .sort(this.compareByDistance)
             .slice(0, MAX_LUNCH_OFFERS)
-            .map(lunchOffer => formatLunchOffer(lunchOffer, client))
+            .map(this.formatLunchOffer)
             .join("\n\n");
+    }
+
+    @boundMethod
+    private compareByDistance(a: LunchOffer, b: LunchOffer): number {
+        const aDistance = haversineDistance(this.client.position, a.business.location.coordinates);
+        const bDistance = haversineDistance(this.client.position, b.business.location.coordinates);
+        return compare(aDistance, bDistance, true);
+    }
+
+    @boundMethod
+    private formatLunchOffer(lunchOffer: LunchOffer): string {
+        const { business, foods } = lunchOffer;
+        const meters = haversineDistance(
+            this.client.position,
+            lunchOffer.business.location.coordinates,
+        );
+        const distance = formatDistance(meters);
+
+        return `${business.name} - ${business.address} - ${distance}\n${foods
+            .map(formatFood)
+            .join("\n")}`;
     }
 }
