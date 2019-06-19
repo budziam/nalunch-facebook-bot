@@ -22,6 +22,8 @@ export class WebhookHandler {
             quick_reply: event.message.quick_reply,
         });
 
+        console.log(event);
+
         try {
             const client = this.clientManager.get(event.sender.id);
 
