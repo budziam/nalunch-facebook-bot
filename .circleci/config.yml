@@ -34,7 +34,12 @@ jobs:
 
     - run:
         name: Test
-        command: yarn test
+        command: yarn test --ci --runInBand --reporters=jest-junit --collectCoverage=true
+        environment:
+          JEST_JUNIT_OUTPUT: "test-results/jest/results.xml"
 
     - store_test_results:
         path: test-results
+
+    - store_artifacts:
+        path: coverage

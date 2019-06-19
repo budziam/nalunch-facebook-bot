@@ -8,7 +8,7 @@
     "pretty": "prettier './src/**/*.{ts,tsx}' './__tests__/**/*.{ts,tsx}' --check",
     "pretty:fix": "yarn pretty --write",
     "start": "ts-node app.ts",
-    "test": "jest"
+    "test": "jest --reporters=default"
   },
   "dependencies": {
     "@types/body-parser": "^1.17.0",
@@ -28,6 +28,7 @@
     "inversify": "^5.0.1",
     "jest": "^24.8.0",
     "jest-create-mock-instance": "^1.1.0",
+    "jest-junit": "^6.4.0",
     "lint-staged": "^8.1.5",
     "moment": "^2.24.0",
     "node-env-file": "^0.1.8",
