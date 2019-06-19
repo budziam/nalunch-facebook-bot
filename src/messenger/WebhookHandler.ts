@@ -4,6 +4,7 @@ import { IncomingEvent } from "./types";
 import { ClientManager } from "../client/ClientManager";
 import { ControllerFactory } from "./ControllerFactory";
 import { FacebookApi } from "../api/FacebookApi";
+import * as util from "util";
 
 @injectable()
 export class WebhookHandler {
@@ -22,7 +23,8 @@ export class WebhookHandler {
             quick_reply: event.message.quick_reply,
         });
 
-        console.log(event);
+        // tslint:disable-next-line:no-null-keyword
+        console.log(util.inspect(event, false, null, true));
 
         try {
             const client = this.clientManager.get(event.sender.id);
