@@ -85,9 +85,8 @@ export class LunchOfferComposer {
             lunchOffer.business.location.coordinates,
         );
         const distance = formatDistance(meters);
+        const foodsText = foods.map(formatFood).join("\n");
 
-        return `${business.name} - ${business.address} - ${distance}\n${foods
-            .map(formatFood)
-            .join("\n")}`;
+        return `${business.name} - ${distance}\n${business.address}\n${foodsText}`;
     }
 }
