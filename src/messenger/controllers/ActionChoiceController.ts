@@ -4,7 +4,7 @@ import { Client, ClientState } from "../../client/Client";
 import { Bus } from "../Bus";
 import { ACTION_CHOICE_REPLIES, ActionChoicePayload } from "../constants";
 import { equals } from "../utils";
-import { Coordinates } from "../../chunk/types";
+import { Coordinates } from "chunk";
 
 const extractLocation = (event: IncomingEvent): Coordinates | undefined => {
     const attachments = event.message.attachments;

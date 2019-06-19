@@ -1,4 +1,4 @@
-import { ContentType } from "./types";
+import { ContentType } from "../api/FacebookApi";
 
 export enum ActionChoicePayload {
     Conversation = "Conversation",

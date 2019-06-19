@@ -3,12 +3,12 @@ import * as winston from "winston";
 import { IncomingEvent } from "./types";
 import { ClientManager } from "../client/ClientManager";
 import { ControllerFactory } from "./ControllerFactory";
-import { Api } from "./Api";
+import { FacebookApi } from "../api/FacebookApi";
 
 @injectable()
 export class WebhookHandler {
     public constructor(
-        private readonly api: Api,
+        private readonly api: FacebookApi,
         private readonly clientManager: ClientManager,
         private readonly controllerFactory: ControllerFactory,
     ) {

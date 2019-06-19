@@ -38,22 +38,3 @@ export interface IncomingEvent {
 export interface EventController {
     handle(client: Client, event: IncomingEvent): Promise<void>;
 }
-
-export interface OutcomingMessage {
-    quick_replies?: QuickReply[];
-    text: string;
-}
-
-export enum ContentType {
-    Text = "text",
-    Location = "location",
-    UserPhoneNumber = "user_phone_number",
-    UserEmail = "user_email",
-}
-
-export interface QuickReply {
-    content_type: ContentType;
-    image_url?: string;
-    payload?: string;
-    title?: string;
-}

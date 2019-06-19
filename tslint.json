@@ -23,6 +23,7 @@
     "newline-before-return": false,
     "no-any": false,
     "no-console": false,
+    "no-duplicate-imports": [true, {"allow-namespace-imports": true}],
     "no-import-side-effect": false,
     "no-magic-numbers": false,
     "no-parameter-properties": false,

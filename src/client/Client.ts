@@ -1,6 +1,6 @@
+import { Coordinates } from "chunk";
 import { Psid } from "../messenger/types";
 import { ClientProfile } from "./types";
-import { Coordinates } from "../chunk/types";
 
 export enum ClientState {
     ActionChoice = 1,

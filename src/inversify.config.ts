@@ -6,7 +6,9 @@ import Axios from "axios";
 import { WebhookCollection } from "./http/controllers/WebhookCollection";
 import { Config, ConfigKey } from "./Config";
 import { WebhookHandler } from "./messenger/WebhookHandler";
-import { Api } from "./messenger/Api";
+import { ChunkCollectionStore, ChunkStoreFactory, NaLunchApi } from "chunk";
+import { ErrorHandler } from "./ErrorHandler";
+import { FacebookApi } from "./api/FacebookApi";
 
 export const createContainer = (): Container => {
     env(`${__dirname}/../.env`);
@@ -38,7 +40,18 @@ export const createContainer = (): Container => {
                 ),
         );
 
-    container.bind(Api).toDynamicValue(() => new Api(Axios, config.get(ConfigKey.FB_ACCESS_TOKEN)));
+    container.bind(ChunkCollectionStore).toDynamicValue(() => {
+        const api = new NaLunchApi(Axios);
+
+        return new ChunkCollectionStore(
+            api,
+            new ChunkStoreFactory(api, container.get(ErrorHandler)),
+        );
+    });
+
+    container
+        .bind(FacebookApi)
+        .toDynamicValue(() => new FacebookApi(Axios, config.get(ConfigKey.FB_ACCESS_TOKEN)));
 
     return container;
 };

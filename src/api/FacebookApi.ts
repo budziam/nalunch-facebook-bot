@@ -1,12 +1,30 @@
 import { AxiosInstance } from "axios";
 import { injectable } from "inversify";
 import * as qs from "qs";
-import { OutcomingMessage, Psid } from "./types";
-import { trimSlashes } from "../utils";
 import { ClientProfile } from "../client/types";
+import { trimSlashes } from "chunk";
+
+export interface OutcomingMessage {
+    quick_replies?: QuickReply[];
+    text: string;
+}
+
+export enum ContentType {
+    Text = "text",
+    Location = "location",
+    UserPhoneNumber = "user_phone_number",
+    UserEmail = "user_email",
+}
+
+export interface QuickReply {
+    content_type: ContentType;
+    image_url?: string;
+    payload?: string;
+    title?: string;
+}
 
 @injectable()
-export class Api {
+export class FacebookApi {
     public constructor(
         private readonly axios: AxiosInstance,
         private readonly accessToken: string,
@@ -14,7 +32,7 @@ export class Api {
         //
     }
 
-    public async getProfile(psid: Psid): Promise<ClientProfile> {
+    public async getProfile(psid: string): Promise<ClientProfile> {
         const fields = ["first_name", "last_name"];
         const url = this.to(`/${psid}`, { fields: fields.join(",") });
         const response = await this.axios.get(url);

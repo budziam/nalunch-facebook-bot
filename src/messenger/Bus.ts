@@ -1,11 +1,10 @@
 import { injectable } from "inversify";
 import { Client } from "../client/Client";
-import { OutcomingMessage } from "./types";
-import { Api } from "./Api";
+import { FacebookApi, OutcomingMessage } from "../api/FacebookApi";
 
 @injectable()
 export class Bus {
-    public constructor(private readonly api: Api) {
+    public constructor(private readonly api: FacebookApi) {
         //
     }
 
