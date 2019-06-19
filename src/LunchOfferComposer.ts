@@ -42,9 +42,26 @@ const canTake = (lunchOffer: LunchOffer): boolean => fitsDate(lunchOffer) && !lu
 
 const fitsDate = (lunchOffer: LunchOffer): boolean => moment().isSame(lunchOffer.date, "day");
 
-const formatLunchOffer = (lunchOffer: LunchOffer): string => {
+const formatLunchOffer = (lunchOffer: LunchOffer, client: Client): string => {
     const { business, foods } = lunchOffer;
-    return `${business.name} - ${business.address}\n${foods.map(formatFood).join("\n")}`;
+    // @ts-ignore
+    const meters = haversineDistance(client.position, b.business.location.coordinates);
+    const distance = formatDistance(meters);
+    return `${business.name} - ${business.address} - ${distance}m\n${foods
+        .map(formatFood)
+        .join("\n")}`;
+};
+
+const formatDistance = (meters: number): string => {
+    const roundedMeters = Math.round(meters);
+
+    if (roundedMeters < 1000) {
+        return `${roundedMeters}&nbsp;m`;
+    }
+
+    const kilometers = Math.round(roundedMeters / 100) / 10;
+
+    return `${kilometers}&nbsp;km`;
 };
 
 const formatFood = (food: Food): string => `- ${food.name}`;
@@ -62,7 +79,7 @@ export class LunchOfferComposer {
             .filter(canTake)
             .sort((a: LunchOffer, b: LunchOffer) => compareByDistance(a, b, client))
             .slice(0, MAX_LUNCH_OFFERS)
-            .map(formatLunchOffer)
+            .map(lunchOffer => formatLunchOffer(lunchOffer, client))
             .join("\n\n");
     }
 }
