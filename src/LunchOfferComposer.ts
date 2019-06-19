@@ -47,7 +47,7 @@ const formatLunchOffer = (lunchOffer: LunchOffer, client: Client): string => {
     // @ts-ignore
     const meters = haversineDistance(client.position, lunchOffer.business.location.coordinates);
     const distance = formatDistance(meters);
-    return `${business.name} - ${business.address} - ${distance}m\n${foods
+    return `${business.name} - ${business.address} - ${distance}\n${foods
         .map(formatFood)
         .join("\n")}`;
 };
@@ -56,12 +56,12 @@ const formatDistance = (meters: number): string => {
     const roundedMeters = Math.round(meters);
 
     if (roundedMeters < 1000) {
-        return `${roundedMeters}&nbsp;m`;
+        return `${roundedMeters} m`;
     }
 
     const kilometers = Math.round(roundedMeters / 100) / 10;
 
-    return `${kilometers}&nbsp;km`;
+    return `${kilometers} km`;
 };
 
 const formatFood = (food: Food): string => `- ${food.name}`;
