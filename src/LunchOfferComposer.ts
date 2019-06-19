@@ -1,6 +1,6 @@
-import { ChunkCollectionStore, LunchOffer } from "chunk";
+import { ChunkCollectionStore, Food, LunchOffer } from "chunk";
 import * as moment from "moment";
-import haversineDistance from "haversine-distance";
+import * as haversineDistance from "haversine-distance";
 import { Client } from "./client/Client";
 import { injectable } from "inversify";
 
@@ -31,17 +31,23 @@ const compare = (a: any, b: any, asc: boolean = true): number => {
 };
 
 const compareByDistance = (a: LunchOffer, b: LunchOffer, client: Client): number => {
+    // @ts-ignore
     const aDistance = haversineDistance(client.position, a.business.location.coordinates);
+    // @ts-ignore
     const bDistance = haversineDistance(client.position, b.business.location.coordinates);
     return compare(aDistance, bDistance, true);
 };
 
+const canTake = (lunchOffer: LunchOffer): boolean => fitsDate(lunchOffer) && !lunchOffer.isEmpty;
+
 const fitsDate = (lunchOffer: LunchOffer): boolean => moment().isSame(lunchOffer.date, "day");
 
 const formatLunchOffer = (lunchOffer: LunchOffer): string => {
-    const { business } = lunchOffer;
-    return `${business.name}`;
+    const { business, foods } = lunchOffer;
+    return `${business.name} - ${business.address}\n${foods.map(formatFood).join("\n")}`;
 };
+
+const formatFood = (food: Food): string => `- ${food.name}`;
 
 @injectable()
 export class LunchOfferComposer {
@@ -53,8 +59,8 @@ export class LunchOfferComposer {
         await this.chunkCollectionStore.load(client.position, moment(), 5000);
 
         return this.chunkCollectionStore.lunchOffers
-            .filter(fitsDate)
-            .sort((a, b) => compareByDistance(a, b, client))
+            .filter(canTake)
+            .sort((a: LunchOffer, b: LunchOffer) => compareByDistance(a, b, client))
             .slice(0, MAX_LUNCH_OFFERS)
             .map(formatLunchOffer)
             .join("\n\n");

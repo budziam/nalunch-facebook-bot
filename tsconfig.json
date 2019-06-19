@@ -5,6 +5,7 @@
     "module": "commonjs",
     "outDir": "./build",
     "alwaysStrict": true,
+    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,

@@ -28,6 +28,7 @@
     "no-magic-numbers": false,
     "no-parameter-properties": false,
     "no-unbound-method": false,
+    "no-use-before-declare": false,
     "no-unsafe-any": false,
     "no-void-expression": false,
     "object-literal-sort-keys": false,
