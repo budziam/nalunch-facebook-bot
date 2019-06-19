@@ -45,7 +45,7 @@ const fitsDate = (lunchOffer: LunchOffer): boolean => moment().isSame(lunchOffer
 const formatLunchOffer = (lunchOffer: LunchOffer, client: Client): string => {
     const { business, foods } = lunchOffer;
     // @ts-ignore
-    const meters = haversineDistance(client.position, b.business.location.coordinates);
+    const meters = haversineDistance(client.position, lunchOffer.business.location.coordinates);
     const distance = formatDistance(meters);
     return `${business.name} - ${business.address} - ${distance}m\n${foods
         .map(formatFood)
