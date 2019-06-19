@@ -9,7 +9,7 @@ export enum ClientState {
 
 export class Client {
     public profile?: ClientProfile;
-    public location?: Coordinates;
+    public position?: Coordinates;
     private readonly _psid: Psid;
     private _state: ClientState = ClientState.ActionChoice;
 

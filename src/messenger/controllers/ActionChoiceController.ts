@@ -5,11 +5,12 @@ import { Bus } from "../Bus";
 import { ACTION_CHOICE_REPLIES, ActionChoicePayload } from "../constants";
 import { equals } from "../utils";
 import { Coordinates } from "chunk";
+import { LunchOfferComposer } from "../../LunchOfferComposer";
 
 const extractLocation = (event: IncomingEvent): Coordinates | undefined => {
     const attachments = event.message.attachments;
 
-    if (attachments && attachments[0] && attachments[0].type === "location") {
+    if (attachments && attachments[0] && attachments[0].type === "position") {
         return {
             latitude: attachments[0].payload.coordinates.lat,
             longitude: attachments[0].payload.coordinates.long,
@@ -21,7 +22,10 @@ const extractLocation = (event: IncomingEvent): Coordinates | undefined => {
 
 @injectable()
 export class ActionChoiceController implements EventController {
-    public constructor(private readonly bus: Bus) {
+    public constructor(
+        private readonly bus: Bus,
+        private readonly lunchOfferComposer: LunchOfferComposer,
+    ) {
         //
     }
 
@@ -49,13 +53,12 @@ export class ActionChoiceController implements EventController {
 
     private async locationChosen(client: Client, location: Coordinates): Promise<void> {
         client.moveToState(ClientState.ListBusinesses);
-        client.location = location;
+        client.position = location;
+
+        const message = await this.lunchOfferComposer.composeFor(client);
 
         // TODO Implement
-        return this.bus.send(
-            client,
-            `Tutaj powinny się wyświetlić restauracje w okolicy ${client.location.latitude},${client.location.longitude}`,
-        );
+        return this.bus.send(client, message);
     }
 
     private async displayActions(client: Client): Promise<void> {
