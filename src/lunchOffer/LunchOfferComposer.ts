@@ -54,10 +54,13 @@ export class LunchOfferComposer {
         const subtitle = [tagComposer.priceRange, tagComposer.timeInterval]
             .filter(a => a)
             .join(", ");
+
         const foodsText = chooseFoods(lunchOffer)
             .map(formatFood)
             .join("\n");
 
-        return `${lunchOffer.business.name} - ${distance}\n${subtitle}\n${foodsText}`;
+        const lines = [`${lunchOffer.business.name} ${distance}`, subtitle, foodsText];
+
+        return lines.filter(a => a).join("\n");
     }
 }

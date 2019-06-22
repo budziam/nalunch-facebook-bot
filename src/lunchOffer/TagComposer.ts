@@ -11,7 +11,7 @@ export class TagComposer {
 
     public get priceRange(): string | undefined {
         const priceRange = this.formatPriceRange();
-        return priceRange ? `💲 ${priceRange}` : undefined;
+        return priceRange ? `💰 ${priceRange}` : undefined;
     }
 
     public get timeInterval(): string | undefined {
@@ -32,7 +32,7 @@ export class TagComposer {
             client.position,
             this.lunchOffer.business.location.coordinates,
         );
-        return `🚶‍${this.formatMeters(meters)}`;
+        return `🚶‍ ${this.formatMeters(meters)}`;
     }
 
     private formatPriceRange(): string | undefined {
@@ -85,12 +85,12 @@ export class TagComposer {
         const roundedMeters = Math.round(meters);
 
         if (roundedMeters < 1000) {
-            return `${roundedMeters}m`;
+            return `${roundedMeters} m`;
         }
 
         const kilometers = Math.round(roundedMeters / 100) / 10;
 
-        return `${kilometers}km`;
+        return `${kilometers} km`;
     }
 
     private get business(): Business {
