@@ -909,8 +909,8 @@ chownr@^1.1.1:
   integrity sha512-j38EvO5+LHX84jlo6h4UzmOwi0UgW61WRyPtJz4qaadK5eY3BTS5TY/S1Stc3Uk2lIM6TPevAlULiEJwie860g==
 
 "chunk@git+ssh://git@github.com:budziam/nalunch-chunk-js.git#master":
-  version "1.0.1"
-  resolved "git+ssh://git@github.com:budziam/nalunch-chunk-js.git#1b9f4bcd0b6a362e5f5c4e6562e8e884089ee0ae"
+  version "1.0.2"
+  resolved "git+ssh://git@github.com:budziam/nalunch-chunk-js.git#e9eee125fe64eee3a5534acda3be6b47bbb2dce3"
   dependencies:
     "@types/node" "^12.0.8"
     "@types/qs" "^6.5.3"

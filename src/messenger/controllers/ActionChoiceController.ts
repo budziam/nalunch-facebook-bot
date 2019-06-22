@@ -6,19 +6,8 @@ import { ACTION_CHOICE_REPLIES, ActionChoicePayload } from "../constants";
 import { equals } from "../utils";
 import { Coordinates } from "chunk";
 import { LunchOfferComposerFactory } from "../../lunchOffer/LunchOfferComposerFactory";
-
-const extractLocation = (event: IncomingEvent): Coordinates | undefined => {
-    const attachments = event.message.attachments;
-
-    if (attachments && attachments[0] && attachments[0].type === "location") {
-        return {
-            latitude: attachments[0].payload.coordinates.lat,
-            longitude: attachments[0].payload.coordinates.long,
-        };
-    }
-
-    return undefined;
-};
+import { LocationFinder } from "../../lunchOffer/LocationFinder";
+import { ContentType } from "../../api/FacebookApi";
 
 @injectable()
 export class ActionChoiceController implements EventController {
@@ -37,9 +26,23 @@ export class ActionChoiceController implements EventController {
             return this.conversationChosen(client);
         }
 
-        const location = extractLocation(event);
+        const locationFinder = new LocationFinder(event);
+        const location = locationFinder.getQuickReplyLocation();
+
         if (location) {
             return this.locationChosen(client, location);
+        }
+
+        const matches = locationFinder.matchLocation();
+        if (matches.length !== 0) {
+            return this.bus.send(client, {
+                text: "Wybierz lokalizację",
+                quick_replies: matches.map(match => ({
+                    content_type: ContentType.Text,
+                    title: match.label,
+                    payload: match.payload,
+                })),
+            });
         }
 
         await this.displayActions(client);
@@ -55,7 +58,8 @@ export class ActionChoiceController implements EventController {
         client.moveToState(ClientState.ListBusinesses);
         client.position = location;
 
-        const message = await this.lunchOfferComposerFactory.create(client).compose();
+        const lunchOfferComposer = this.lunchOfferComposerFactory.create(client);
+        const message = await lunchOfferComposer.compose();
 
         return this.bus.send(client, message);
     }
@@ -66,7 +70,7 @@ export class ActionChoiceController implements EventController {
             `Cześć ${client.profile.firstName}! Chętnie pomogę Ci znaleźć lunch 🍲 w Twojej okolicy. Wystarczy, że podasz mi swoją lokalizacje 📍`,
         );
         await this.bus.send(client, {
-            text: "A może mogę Ci pomóc w inny sposób?",
+            text: "Wybierz proszę co chcesz zrobić, albo powiedz gdzie chcesz znaleźć lunche",
             quick_replies: ACTION_CHOICE_REPLIES,
         });
     }
