@@ -10,7 +10,7 @@ export const ACTION_CHOICE_REPLIES = [
     },
     {
         content_type: ContentType.Text,
-        title: "👩‍🚀 Rozmowa z człowiekiem",
+        title: "👩 Rozmowa z człowiekiem",
         payload: ActionChoicePayload.Conversation,
     },
 ];
