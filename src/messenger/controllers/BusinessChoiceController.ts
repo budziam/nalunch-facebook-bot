@@ -5,14 +5,14 @@ import { Bus } from "../Bus";
 import { FallbackService } from "../FallbackService";
 import { ChunkCollectionStore } from "chunk";
 import { LunchOfferPayload } from "../../lunchOffer/LunchOfferPayload";
-import { LunchOfferComposer } from "../../lunchOffer/LunchOfferComposer";
+import { LunchOfferComposerFactory } from "../../lunchOffer/LunchOfferComposerFactory";
 
 @injectable()
 export class BusinessChoiceController implements EventController {
     public constructor(
         private readonly bus: Bus,
         private readonly fallbackService: FallbackService,
-        private readonly lunchOfferComposer: LunchOfferComposer,
+        private readonly lunchOfferComposerFactory: LunchOfferComposerFactory,
         private readonly chunkCollectionStore: ChunkCollectionStore,
     ) {
         //
@@ -39,7 +39,8 @@ export class BusinessChoiceController implements EventController {
             return this.fallbackService.unknownSituation(client);
         }
 
-        const [text, quickReplies] = this.lunchOfferComposer.composeOne(lunchOfferStore.lunchOffer);
+        const lunchOfferComposer = this.lunchOfferComposerFactory.create(client);
+        const [text, quickReplies] = lunchOfferComposer.composeOne(lunchOfferStore.lunchOffer);
         await this.bus.send(client, {
             text,
             quick_replies: quickReplies,
