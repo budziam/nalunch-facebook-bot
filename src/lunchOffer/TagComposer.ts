@@ -1,4 +1,4 @@
-import { Business, LunchOffer, TimeInterval } from "chunk";
+import { Business, FacebookSource, LunchOffer, TimeInterval, WebsiteSource } from "chunk";
 import * as moment from "moment";
 // @ts-ignore
 import * as haversineDistance from "haversine-distance";
@@ -14,24 +14,52 @@ export class TagComposer {
         return priceRange ? `💰 ${priceRange}` : undefined;
     }
 
-    public get timeInterval(): string | undefined {
+    public get lunchTimeInterval(): string | undefined {
         const timeInterval = this.business
             .getLunchHours(moment())
             .map(this.formatTimeInterval)
             .join(", ");
 
-        if (timeInterval) {
-            return `⏱️ ${timeInterval}`;
+        return timeInterval ? `🕙️ ${timeInterval}` : undefined;
+    }
+
+    public get openingTimeInterval(): string | undefined {
+        const timeInterval = this.business
+            .getOpeningHours(moment())
+            .map(this.formatTimeInterval)
+            .join(", ");
+
+        return timeInterval ? `🕙️ ${timeInterval}` : undefined;
+    }
+
+    public get phoneNumber(): string | undefined {
+        const phoneNumber = this.business.phoneNumber;
+
+        return phoneNumber ? `📞 ${phoneNumber}` : undefined;
+    }
+
+    public get address(): string {
+        const address = `${this.business.address}, ${this.business.city}`;
+        return `📍 ${address}`;
+    }
+
+    public get source(): string | undefined {
+        const source = this.business.source;
+
+        if (source instanceof FacebookSource) {
+            return `👉 ${source.facebookUrl}`;
+        }
+
+        if (source instanceof WebsiteSource) {
+            return `👉 ${source.url}`;
         }
 
         return undefined;
     }
 
     public distance(client: Client): string {
-        const meters = haversineDistance(
-            client.position,
-            this.lunchOffer.business.location.coordinates,
-        );
+        const meters = haversineDistance(client.position, this.business.location.coordinates);
+
         return `🚶‍ ${this.formatMeters(meters)}`;
     }
 

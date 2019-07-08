@@ -33,6 +33,10 @@ export class ControllerFactory {
                 return this.container.get(ActionChoiceController);
             }
 
+            if (client.state === ClientState.ListBusinesses) {
+                return this.container.get(ActionChoiceController);
+            }
+
             return this.container.get(UnknownMessageController);
         }
 
