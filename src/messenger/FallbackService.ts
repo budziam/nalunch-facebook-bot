@@ -1,6 +1,8 @@
 import { Client, ClientState } from "../client/Client";
 import { Bus } from "./Bus";
+import { injectable } from "inversify";
 
+@injectable()
 export class FallbackService {
     public constructor(private readonly bus: Bus) {
         //
