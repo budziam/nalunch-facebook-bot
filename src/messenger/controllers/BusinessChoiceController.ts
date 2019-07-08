@@ -43,7 +43,7 @@ export class BusinessChoiceController implements EventController {
         const [text, quickReplies] = lunchOfferComposer.composeOne(lunchOfferStore.lunchOffer);
         await this.bus.send(client, {
             text,
-            quick_replies: quickReplies,
+            // quick_replies: quickReplies,
         });
     }
 }
