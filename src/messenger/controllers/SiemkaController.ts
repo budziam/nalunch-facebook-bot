@@ -1,5 +1,4 @@
 import { injectable } from "inversify";
-import * as winston from "winston";
 import { Client } from "../../client/Client";
 import { EventController, IncomingEvent } from "../types";
 import { Bus } from "../Bus";

@@ -2,19 +2,33 @@ import { injectable } from "inversify";
 import { EventController, IncomingEvent } from "../types";
 import { Client, ClientState } from "../../client/Client";
 import { Bus } from "../Bus";
-import { ACTION_CHOICE_REPLIES, ActionChoicePayload } from "../constants";
+import { ActionChoicePayload } from "../constants";
 import { equals } from "../utils";
 import { ChunkCollectionStore, Coordinates } from "chunk";
 import { ContentType } from "../../api/FacebookApi";
 import { LunchOfferComposerFactory } from "../../lunchOffer/composer/LunchOfferComposerFactory";
-import { LocationFinder } from "../../location/LocationFinder";
 import * as moment from "moment";
+import { FallbackService } from "../FallbackService";
+
+const getQuickReplyLocation = (event: IncomingEvent): Coordinates | undefined => {
+    const attachments = event.message.attachments;
+
+    if (attachments && attachments[0] && attachments[0].type === "location") {
+        return {
+            latitude: attachments[0].payload.coordinates.lat,
+            longitude: attachments[0].payload.coordinates.long,
+        };
+    }
+
+    return undefined;
+};
 
 @injectable()
 export class ActionChoiceController implements EventController {
     public constructor(
         private readonly bus: Bus,
         private readonly chunkCollectionStore: ChunkCollectionStore,
+        private readonly fallbackService: FallbackService,
         private readonly lunchOfferComposerFactory: LunchOfferComposerFactory,
     ) {
         //
@@ -28,32 +42,29 @@ export class ActionChoiceController implements EventController {
             return this.conversationChosen(client);
         }
 
-        const locationFinder = new LocationFinder(event);
-        const location = locationFinder.getQuickReplyLocation();
-
+        const location = getQuickReplyLocation(event);
         if (location) {
             return this.locationChosen(client, location);
         }
 
-        const matches = locationFinder.matchLocation();
-        if (matches.length !== 0) {
-            return this.bus.send(client, {
-                text: "Wybierz lokalizację",
-                quick_replies: matches.map(match => ({
-                    content_type: ContentType.Text,
-                    title: match.label,
-                    payload: match.payload,
-                })),
-            });
-        }
-
-        await this.displayActions(client);
+        return this.fallbackService.unknownSituation(client);
     }
 
     private async conversationChosen(client: Client): Promise<void> {
-        // https://developers.facebook.com/docs/messenger-platform/handover-protocol/pass-thread-control
-        client.moveToState(ClientState.ActionChoice);
-        return this.bus.passThreadControl(client);
+        client.moveToState(ClientState.HumanConversation);
+        return this.bus.send(client, {
+            text: "Czy na pewno chcesz porozmawiać z człowiekem 👩 ?",
+            quick_replies: [
+                {
+                    content_type: ContentType.Text,
+                    title: "Nie",
+                },
+                {
+                    content_type: ContentType.Text,
+                    title: "Tak",
+                },
+            ],
+        });
     }
 
     private async locationChosen(client: Client, location: Coordinates): Promise<void> {
@@ -62,7 +73,7 @@ export class ActionChoiceController implements EventController {
 
         await this.bus.send(
             client,
-            "Kilka moich propozycji. Wybierz dany lokal, aby zobaczyć pełną ofertę.",
+            "Kilka moich propozycji 👌 Wybierz dany lokal, aby zobaczyć pełną ofertę.",
         );
 
         await this.chunkCollectionStore.load(client.position, moment());
@@ -73,17 +84,6 @@ export class ActionChoiceController implements EventController {
         await this.bus.send(client, {
             text,
             quick_replies: quickReplies,
-        });
-    }
-
-    private async displayActions(client: Client): Promise<void> {
-        await this.bus.send(
-            client,
-            `Cześć ${client.profile.firstName}! Chętnie pomogę Ci znaleźć lunch 🍲 w Twojej okolicy. Wystarczy, że podasz mi swoją lokalizacje 📍`,
-        );
-        await this.bus.send(client, {
-            text: "A może chcesz zrobić coś innego?",
-            quick_replies: ACTION_CHOICE_REPLIES,
         });
     }
 }
