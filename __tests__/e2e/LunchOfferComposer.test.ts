@@ -4,9 +4,12 @@ import { Client } from "../../src/client/Client";
 import { LunchOfferComposerFactory } from "../../src/lunchOffer/LunchOfferComposerFactory";
 import * as moment from "moment";
 import { ChunkCollectionStore, EnrichedSlug } from "chunk";
+import { Factory } from "../Factory";
 
 describe("Lunch offer composer", () => {
+    let client: Client;
     let container: Container;
+    let factory: Factory;
     let lunchOfferComposerFactory: LunchOfferComposerFactory;
 
     beforeEach(() => {
@@ -14,10 +17,11 @@ describe("Lunch offer composer", () => {
         lunchOfferComposerFactory = container.get<LunchOfferComposerFactory>(
             LunchOfferComposerFactory,
         );
+        factory = new Factory();
+        client = factory.client();
     });
 
     it("compose many", async () => {
-        const client = new Client("abc");
         client.position = {
             latitude: 50.0646501,
             longitude: 19.9449799,
@@ -32,7 +36,6 @@ describe("Lunch offer composer", () => {
     });
 
     it("compose one", async () => {
-        const client = new Client("abc");
         client.position = {
             latitude: 52.2293434,
             longitude: 21.0122043,

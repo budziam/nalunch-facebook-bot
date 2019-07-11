@@ -8,7 +8,7 @@ export class ClientManager {
 
     public get(psid: Psid): Client {
         if (!this._clients.has(psid)) {
-            this._clients.set(psid, new Client(psid));
+            this._clients.set(psid, new Client({ psid }));
         }
 
         return this._clients.get(psid);
