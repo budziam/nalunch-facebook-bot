@@ -22,6 +22,7 @@
     "member-ordering": false,
     "newline-before-return": false,
     "no-any": false,
+    "no-async-without-await": false,
     "no-console": false,
     "no-duplicate-imports": [true, {"allow-namespace-imports": true}],
     "no-import-side-effect": false,
@@ -36,6 +37,7 @@
     "ordered-imports": false,
     "prefer-function-over-method": false,
     "strict-boolean-expressions": false,
+    "strict-comparisons": false,
     "typedef": [
       true,
       "call-signature",
