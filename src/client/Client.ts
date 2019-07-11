@@ -5,7 +5,6 @@ import { ClientProfile } from "./types";
 export enum ClientState {
     ActionChoice = 1,
     ListBusinesses = 2,
-    ShowBusiness = 3,
 }
 
 export class Client {

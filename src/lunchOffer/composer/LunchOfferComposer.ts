@@ -32,8 +32,8 @@ export class LunchOfferComposer {
     }
 
     public composeOne(lunchOffer: LunchOffer): [string, QuickReply[]] {
+        const quickReplies = this.lunchOfferPagination.quickReplies();
         const text = this.formatLunchOfferDetailed(lunchOffer);
-        const quickReplies: QuickReply[] = [];
         return [text, quickReplies];
     }
 
