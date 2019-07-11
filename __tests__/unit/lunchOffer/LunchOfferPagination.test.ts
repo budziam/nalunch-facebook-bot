@@ -84,6 +84,7 @@ describe("LunchOfferPagination", () => {
                 content_type: ContentType.Text,
                 payload: PaginationEnum.Next,
                 title: "Więcej",
+                image_url: expect.any(String),
             });
         });
 
@@ -99,6 +100,7 @@ describe("LunchOfferPagination", () => {
                 content_type: ContentType.Text,
                 payload: PaginationEnum.Prev,
                 title: "Poprzednie",
+                image_url: expect.any(String),
             });
             for (let i = 1; i < 3; i += 1) {
                 const lunchOffer = allLunchOffers[i + 4];
