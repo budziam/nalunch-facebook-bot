@@ -33,7 +33,8 @@ describe("Lunch offer composer", () => {
 
         const [text, quickReplies] = lunchOfferComposerFactory.create(client).composeMany();
 
-        console.log(text, quickReplies);
+        console.log(text);
+        console.log(quickReplies);
     });
 
     it("compose one", async () => {
@@ -52,6 +53,7 @@ describe("Lunch offer composer", () => {
             .create(client)
             .composeOne(lunchOfferStore.lunchOffer);
 
-        console.log(text, quickReplies);
+        console.log(text);
+        console.log(quickReplies);
     });
 });

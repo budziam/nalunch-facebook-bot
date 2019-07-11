@@ -11,7 +11,7 @@ export enum PaginationEnum {
 
 export class LunchOfferPagination {
     private pageSize: number = 5;
-    private page: number = 0;
+    private page: number = 1;
 
     public constructor(private readonly lunchOfferCollection: LunchOfferCollection) {
         //
@@ -38,7 +38,7 @@ export class LunchOfferPagination {
             throw new InvalidArgumentException("Invalid page");
         }
 
-        this.page = page - 1;
+        this.page = page;
     }
 
     public items(): LunchOffer[] {
@@ -50,7 +50,7 @@ export class LunchOfferPagination {
     public quickReplies(): QuickReply[] {
         const output: QuickReply[] = [];
 
-        if (this.page > 0) {
+        if (this.page > 1) {
             output.push({
                 content_type: ContentType.Text,
                 payload: PaginationEnum.Prev,
@@ -58,18 +58,30 @@ export class LunchOfferPagination {
             });
         }
 
-        this.items().map(lunchOffer => ({
-            content_type: ContentType.Text,
-            payload: LunchOfferPayload.fromLunchOffer(lunchOffer),
-            title: lunchOffer.business.name,
-        }));
+        output.push(
+            ...this.items().map(lunchOffer => ({
+                content_type: ContentType.Text,
+                payload: LunchOfferPayload.fromLunchOffer(lunchOffer).toString(),
+                title: lunchOffer.business.name,
+            })),
+        );
 
-        // TODO Add Next quick reply
+        if (this.hasMore()) {
+            output.push({
+                content_type: ContentType.Text,
+                payload: PaginationEnum.Next,
+                title: "Więcej",
+            });
+        }
 
         return output;
     }
 
     private get offset(): number {
-        return this.page * this.pageSize;
+        return (this.page - 1) * this.pageSize;
+    }
+
+    private hasMore(): boolean {
+        return this.page * this.pageSize < this.lunchOfferCollection.lunchOffers().length;
     }
 }

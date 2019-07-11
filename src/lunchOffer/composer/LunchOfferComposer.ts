@@ -25,8 +25,8 @@ export class LunchOfferComposer {
 
     public composeMany(): [string, QuickReply[]] {
         const lunchOffers = this.lunchOfferPagination.items();
-        const text = lunchOffers.map(this.formatLunchOfferPreview).join("\n\n");
         const quickReplies = this.lunchOfferPagination.quickReplies();
+        const text = lunchOffers.map(this.formatLunchOfferPreview).join("\n\n");
 
         return [text, quickReplies];
     }

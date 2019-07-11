@@ -2,7 +2,16 @@ import * as faker from "faker";
 import { injectable } from "inversify";
 import { boundClass } from "autobind-decorator";
 import { Client } from "../src/client/Client";
-import { Business, Food, FoodType, LunchOffer, Publication } from "chunk";
+import {
+    Business,
+    FacebookSource,
+    Food,
+    FoodType,
+    LunchOffer,
+    Publication,
+    slugify,
+    Location,
+} from "chunk";
 import * as moment from "moment";
 
 // TODO Use some library for creating tests entities instead of reinventing a wheel
@@ -50,8 +59,20 @@ export class Factory {
     }
 
     public business(attributes: Partial<Business> = {}): Business {
-        // TODO Implement
+        const name = faker.random.word();
         return new Business({
+            id: faker.random.uuid(),
+            slug: slugify(name),
+            name,
+            location: new Location({
+                latitude: 50.0646501,
+                longitude: 19.9449799,
+            }),
+            city: "Kraków",
+            timeIntervals: [],
+            source: new FacebookSource({
+                facebookUrl: faker.internet.url(),
+            }),
             ...attributes,
         });
     }

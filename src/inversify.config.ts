@@ -44,14 +44,17 @@ export const createContainer = (): Container => {
                 ),
         );
 
-    container.bind(ChunkCollectionStore).toDynamicValue(() => {
-        const api = new NaLunchApi(Axios);
+    container
+        .bind(ChunkCollectionStore)
+        .toDynamicValue(() => {
+            const api = new NaLunchApi(Axios);
 
-        return new ChunkCollectionStore(
-            api,
-            new ChunkStoreFactory(api, container.get(ErrorHandler)),
-        );
-    });
+            return new ChunkCollectionStore(
+                api,
+                new ChunkStoreFactory(api, container.get(ErrorHandler)),
+            );
+        })
+        .inSingletonScope();
 
     container
         .bind(FacebookApi)

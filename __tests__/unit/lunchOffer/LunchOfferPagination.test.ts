@@ -1,6 +1,6 @@
 import createMockInstance from "jest-create-mock-instance";
 import { Client } from "../../../src/client/Client";
-import { ChunkCollectionStore, LunchOffer } from "chunk";
+import { LunchOffer } from "chunk";
 import { Factory } from "../../Factory";
 import {
     LunchOfferPagination,
@@ -8,23 +8,23 @@ import {
 } from "../../../src/lunchOffer/pagination/LunchOfferPagination";
 import { ContentType } from "../../../src/api/FacebookApi";
 import { LunchOfferPayload } from "../../../src/lunchOffer/LunchOfferPayload";
+import { LunchOfferCollection } from "../../../src/lunchOffer/collection/LunchOfferCollection";
 
 describe("LunchOfferPagination", () => {
-    let chunkCollectionStore: jest.Mocked<ChunkCollectionStore>;
+    let lunchOfferCollection: jest.Mocked<LunchOfferCollection>;
     let client: Client;
     let factory: Factory;
     let lunchOfferPagination: LunchOfferPagination;
+    let allLunchOffers: LunchOffer[];
 
     beforeEach(() => {
         factory = new Factory();
         client = factory.client();
+        allLunchOffers = factory.lunchOffers(7);
 
-        chunkCollectionStore = createMockInstance(ChunkCollectionStore);
-        Object.defineProperty(chunkCollectionStore, "lunchOffers", {
-            get: jest.fn().mockReturnValue(factory.lunchOffers(7)),
-        });
-
-        lunchOfferPagination = new LunchOfferPagination(chunkCollectionStore, client);
+        lunchOfferCollection = createMockInstance(LunchOfferCollection);
+        lunchOfferCollection.lunchOffers.mockReturnValue(allLunchOffers);
+        lunchOfferPagination = new LunchOfferPagination(lunchOfferCollection);
     });
 
     describe("items", () => {
@@ -35,7 +35,7 @@ describe("LunchOfferPagination", () => {
             // then
             expect(lunchOffers).toHaveLength(5);
             expect(lunchOffers).toContainEqual(expect.any(LunchOffer));
-            expect(lunchOffers[0]).toBe(chunkCollectionStore.lunchOffers[0]);
+            expect(lunchOffers[0]).toBe(allLunchOffers[0]);
         });
 
         it("lists next lunch offers", () => {
@@ -48,7 +48,7 @@ describe("LunchOfferPagination", () => {
             // then
             expect(lunchOffers).toHaveLength(2);
             expect(lunchOffers).toContainEqual(expect.any(LunchOffer));
-            expect(lunchOffers[0]).toBe(chunkCollectionStore.lunchOffers[5]);
+            expect(lunchOffers[0]).toBe(allLunchOffers[5]);
         });
 
         it("lists previous lunch offers", () => {
@@ -62,7 +62,7 @@ describe("LunchOfferPagination", () => {
             // then
             expect(lunchOffers).toHaveLength(5);
             expect(lunchOffers).toContainEqual(expect.any(LunchOffer));
-            expect(lunchOffers[0]).toBe(chunkCollectionStore.lunchOffers[0]);
+            expect(lunchOffers[0]).toBe(allLunchOffers[0]);
         });
     });
 
@@ -73,7 +73,7 @@ describe("LunchOfferPagination", () => {
 
             // then
             for (let i = 0; i < 5; i += 1) {
-                const lunchOffer = chunkCollectionStore.lunchOffers[i];
+                const lunchOffer = allLunchOffers[i];
                 expect(quickReplies[i]).toEqual({
                     content_type: ContentType.Text,
                     payload: LunchOfferPayload.fromLunchOffer(lunchOffer).toString(),
@@ -101,7 +101,7 @@ describe("LunchOfferPagination", () => {
                 title: "Poprzednie",
             });
             for (let i = 1; i < 3; i += 1) {
-                const lunchOffer = chunkCollectionStore.lunchOffers[i];
+                const lunchOffer = allLunchOffers[i + 4];
                 expect(quickReplies[i]).toEqual({
                     content_type: ContentType.Text,
                     payload: LunchOfferPayload.fromLunchOffer(lunchOffer).toString(),
