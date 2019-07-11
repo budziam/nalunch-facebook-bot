@@ -58,10 +58,18 @@ export class ActionChoiceController implements EventController {
         client.moveToState(ClientState.ListBusinesses);
         client.position = location;
 
-        const lunchOfferComposer = this.lunchOfferComposerFactory.create(client);
-        const message = await lunchOfferComposer.compose();
+        await this.bus.send(
+            client,
+            "Kilka moich propozycji. Wybierz dany lokal, aby zobaczyć pełną ofertę.",
+        );
 
-        return this.bus.send(client, message);
+        const lunchOfferComposer = this.lunchOfferComposerFactory.create(client);
+        const [text, quickReplies] = await lunchOfferComposer.composeMany();
+
+        await this.bus.send(client, {
+            text,
+            quick_replies: quickReplies,
+        });
     }
 
     private async displayActions(client: Client): Promise<void> {
@@ -70,7 +78,7 @@ export class ActionChoiceController implements EventController {
             `Cześć ${client.profile.firstName}! Chętnie pomogę Ci znaleźć lunch 🍲 w Twojej okolicy. Wystarczy, że podasz mi swoją lokalizacje 📍`,
         );
         await this.bus.send(client, {
-            text: "Wybierz proszę co chcesz zrobić, albo powiedz gdzie chcesz znaleźć lunche",
+            text: "A może chcesz zrobić coś innego?",
             quick_replies: ACTION_CHOICE_REPLIES,
         });
     }

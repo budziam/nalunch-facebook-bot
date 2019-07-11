@@ -10,6 +10,7 @@ import { SiemkaController } from "./controllers/SiemkaController";
 import { CancelController } from "./controllers/CancelController";
 import { UnknownMessageController } from "./controllers/UnknownMessageController";
 import { ActionChoiceController } from "./controllers/ActionChoiceController";
+import { BusinessChoiceController } from "./controllers/BusinessChoiceController";
 
 @injectable()
 export class ControllerFactory {
@@ -31,6 +32,10 @@ export class ControllerFactory {
 
             if (client.state === ClientState.ActionChoice) {
                 return this.container.get(ActionChoiceController);
+            }
+
+            if (client.state === ClientState.ListBusinesses) {
+                return this.container.get(BusinessChoiceController);
             }
 
             return this.container.get(UnknownMessageController);
