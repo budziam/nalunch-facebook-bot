@@ -1,8 +1,9 @@
-import { ChunkCollectionStore, LunchOffer } from "chunk";
+import { LunchOffer } from "chunk";
 import { InvalidArgumentException } from "../../exceptions/InvalidArgumentException";
 import { Client } from "../../client/Client";
 import { ContentType, QuickReply } from "../../api/FacebookApi";
 import { LunchOfferPayload } from "../LunchOfferPayload";
+import { LunchOfferCollection } from "../LunchOfferCollection";
 
 export enum PaginationEnum {
     Next = "next",
@@ -14,7 +15,7 @@ export class LunchOfferPagination {
     private page: number = 0;
 
     public constructor(
-        private readonly chunkCollectionStore: ChunkCollectionStore,
+        private readonly lunchOfferCollection: LunchOfferCollection,
         private readonly client: Client,
     ) {
         //
@@ -45,10 +46,9 @@ export class LunchOfferPagination {
     }
 
     public items(): LunchOffer[] {
-        return this.chunkCollectionStore.lunchOffers.slice(
-            this.offset,
-            this.offset + this.pageSize,
-        );
+        return this.lunchOfferCollection
+            .lunchOffers()
+            .slice(this.offset, this.offset + this.pageSize);
     }
 
     public quickReplies(): QuickReply[] {

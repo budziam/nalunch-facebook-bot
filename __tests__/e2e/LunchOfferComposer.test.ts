@@ -1,10 +1,10 @@
 import { Container } from "inversify";
 import { setup } from "../utils";
 import { Client } from "../../src/client/Client";
-import { LunchOfferComposerFactory } from "../../src/lunchOffer/LunchOfferComposerFactory";
 import * as moment from "moment";
 import { ChunkCollectionStore, EnrichedSlug } from "chunk";
 import { Factory } from "../Factory";
+import { LunchOfferComposerFactory } from "../../src/lunchOffer/composer/LunchOfferComposerFactory";
 
 describe("Lunch offer composer", () => {
     let client: Client;

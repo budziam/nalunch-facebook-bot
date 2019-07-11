@@ -5,7 +5,7 @@ import { Bus } from "../Bus";
 import { FallbackService } from "../FallbackService";
 import { ChunkCollectionStore } from "chunk";
 import { LunchOfferPayload } from "../../lunchOffer/LunchOfferPayload";
-import { LunchOfferComposerFactory } from "../../lunchOffer/LunchOfferComposerFactory";
+import { LunchOfferComposerFactory } from "../../lunchOffer/composer/LunchOfferComposerFactory";
 
 @injectable()
 export class BusinessChoiceController implements EventController {

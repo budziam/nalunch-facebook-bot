@@ -1,22 +1,15 @@
-import { ChunkCollectionStore, compare, EnrichedSlug, Food, LunchOffer } from "chunk";
+import { ChunkCollectionStore, Food, LunchOffer } from "chunk";
 import * as moment from "moment";
-// @ts-ignore
-import * as haversineDistance from "haversine-distance";
 import { injectable } from "inversify";
 import { boundMethod } from "autobind-decorator";
-import { Client } from "../client/Client";
+import { LunchOfferCollection } from "../LunchOfferCollection";
+import { Client } from "../../client/Client";
+import { ContentType, QuickReply } from "../../api/FacebookApi";
+import { chooseFoods } from "../foodUtils";
 import { TagComposer } from "./TagComposer";
-import { chooseFoods } from "./foodUtils";
-import { ContentType, QuickReply } from "../api/FacebookApi";
-import { LunchOfferPayload } from "./LunchOfferPayload";
-
-const MAX_LUNCH_OFFERS = 5;
+import { LunchOfferPayload } from "../LunchOfferPayload";
 
 const truthy = (item: any): boolean => !!item;
-
-const canTake = (lunchOffer: LunchOffer): boolean => fitsDate(lunchOffer) && !lunchOffer.isEmpty;
-
-const fitsDate = (lunchOffer: LunchOffer): boolean => moment().isSame(lunchOffer.date, "day");
 
 const formatFood = (food: Food): string => {
     const price = food.price ? ` - ${food.price.toFixed(2)}zł` : "";
@@ -27,18 +20,17 @@ const formatFood = (food: Food): string => {
 export class LunchOfferComposer {
     public constructor(
         private readonly chunkCollectionStore: ChunkCollectionStore,
+        private readonly lunchOfferCollection: LunchOfferCollection,
         private readonly client: Client,
     ) {
         //
     }
 
     public async composeMany(): Promise<[string, QuickReply[]]> {
+        // TODO It should be moved
         await this.chunkCollectionStore.load(this.client.position, moment(), 5000);
 
-        const lunchOffers = this.chunkCollectionStore.lunchOffers
-            .filter(canTake)
-            .sort(this.compareByDistance)
-            .slice(0, MAX_LUNCH_OFFERS);
+        const lunchOffers = this.lunchOfferCollection.lunchOffers();
 
         const text = lunchOffers.map(this.formatLunchOfferPreview).join("\n\n");
         const quickReplies = lunchOffers.map(this.formatLunchOfferQuickReply);
@@ -50,13 +42,6 @@ export class LunchOfferComposer {
         const text = this.formatLunchOfferDetailed(lunchOffer);
         const quickReplies: QuickReply[] = [];
         return [text, quickReplies];
-    }
-
-    @boundMethod
-    private compareByDistance(a: LunchOffer, b: LunchOffer): number {
-        const aDistance = haversineDistance(this.client.position, a.business.location.coordinates);
-        const bDistance = haversineDistance(this.client.position, b.business.location.coordinates);
-        return compare(aDistance, bDistance, true);
     }
 
     @boundMethod
