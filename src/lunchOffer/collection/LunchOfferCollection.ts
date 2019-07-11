@@ -3,7 +3,7 @@ import * as moment from "moment";
 // @ts-ignore
 import * as haversineDistance from "haversine-distance";
 import { ChunkCollectionStore, compare, LunchOffer } from "chunk";
-import { Client } from "../client/Client";
+import { Client } from "../../client/Client";
 
 const canTake = (lunchOffer: LunchOffer): boolean => fitsDate(lunchOffer) && !lunchOffer.isEmpty;
 const fitsDate = (lunchOffer: LunchOffer): boolean => moment().isSame(lunchOffer.date, "day");

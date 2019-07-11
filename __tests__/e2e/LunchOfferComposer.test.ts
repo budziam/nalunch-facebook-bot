@@ -10,10 +10,12 @@ describe("Lunch offer composer", () => {
     let client: Client;
     let container: Container;
     let factory: Factory;
+    let chunkCollectionStore: ChunkCollectionStore;
     let lunchOfferComposerFactory: LunchOfferComposerFactory;
 
     beforeEach(() => {
         container = setup();
+        chunkCollectionStore = container.get<ChunkCollectionStore>(ChunkCollectionStore);
         lunchOfferComposerFactory = container.get<LunchOfferComposerFactory>(
             LunchOfferComposerFactory,
         );
@@ -27,12 +29,11 @@ describe("Lunch offer composer", () => {
             longitude: 19.9449799,
         };
 
-        const [text, quickReplies] = await container
-            .get<LunchOfferComposerFactory>(LunchOfferComposerFactory)
-            .create(client)
-            .composeMany();
+        await chunkCollectionStore.load(client.position, moment());
 
-        console.log(text);
+        const [text, quickReplies] = lunchOfferComposerFactory.create(client).composeMany();
+
+        console.log(text, quickReplies);
     });
 
     it("compose one", async () => {
@@ -41,7 +42,6 @@ describe("Lunch offer composer", () => {
             longitude: 21.0122043,
         };
 
-        const chunkCollectionStore = container.get<ChunkCollectionStore>(ChunkCollectionStore);
         const lunchOfferStore = chunkCollectionStore.getLunchOfferStore(
             moment(),
             EnrichedSlug.fromString("mala-gruzja-restauracja,513362100"),
@@ -52,6 +52,6 @@ describe("Lunch offer composer", () => {
             .create(client)
             .composeOne(lunchOfferStore.lunchOffer);
 
-        console.log(text);
+        console.log(text, quickReplies);
     });
 });

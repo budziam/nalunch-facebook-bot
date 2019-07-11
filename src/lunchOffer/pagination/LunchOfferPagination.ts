@@ -1,9 +1,8 @@
 import { LunchOffer } from "chunk";
 import { InvalidArgumentException } from "../../exceptions/InvalidArgumentException";
-import { Client } from "../../client/Client";
 import { ContentType, QuickReply } from "../../api/FacebookApi";
 import { LunchOfferPayload } from "../LunchOfferPayload";
-import { LunchOfferCollection } from "../LunchOfferCollection";
+import { LunchOfferCollection } from "../collection/LunchOfferCollection";
 
 export enum PaginationEnum {
     Next = "next",
@@ -14,10 +13,7 @@ export class LunchOfferPagination {
     private pageSize: number = 5;
     private page: number = 0;
 
-    public constructor(
-        private readonly lunchOfferCollection: LunchOfferCollection,
-        private readonly client: Client,
-    ) {
+    public constructor(private readonly lunchOfferCollection: LunchOfferCollection) {
         //
     }
 

@@ -3,7 +3,7 @@ import { injectable } from "inversify";
 import { Psid } from "../messenger/types";
 
 @injectable()
-export class ClientManager {
+export class ClientProvider {
     public readonly _clients: Map<Psid, Client> = new Map();
 
     public get(psid: Psid): Client {

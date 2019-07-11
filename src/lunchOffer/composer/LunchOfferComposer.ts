@@ -1,13 +1,10 @@
 import { ChunkCollectionStore, Food, LunchOffer } from "chunk";
-import * as moment from "moment";
-import { injectable } from "inversify";
-import { boundMethod } from "autobind-decorator";
-import { LunchOfferCollection } from "../LunchOfferCollection";
+import { boundClass } from "autobind-decorator";
 import { Client } from "../../client/Client";
-import { ContentType, QuickReply } from "../../api/FacebookApi";
+import { QuickReply } from "../../api/FacebookApi";
 import { chooseFoods } from "../foodUtils";
 import { TagComposer } from "./TagComposer";
-import { LunchOfferPayload } from "../LunchOfferPayload";
+import { LunchOfferPagination } from "../pagination/LunchOfferPagination";
 
 const truthy = (item: any): boolean => !!item;
 
@@ -16,24 +13,20 @@ const formatFood = (food: Food): string => {
     return `- ${food.name}${price}`;
 };
 
-@injectable()
+@boundClass
 export class LunchOfferComposer {
     public constructor(
         private readonly chunkCollectionStore: ChunkCollectionStore,
-        private readonly lunchOfferCollection: LunchOfferCollection,
+        private readonly lunchOfferPagination: LunchOfferPagination,
         private readonly client: Client,
     ) {
         //
     }
 
-    public async composeMany(): Promise<[string, QuickReply[]]> {
-        // TODO It should be moved
-        await this.chunkCollectionStore.load(this.client.position, moment(), 5000);
-
-        const lunchOffers = this.lunchOfferCollection.lunchOffers();
-
+    public composeMany(): [string, QuickReply[]] {
+        const lunchOffers = this.lunchOfferPagination.items();
         const text = lunchOffers.map(this.formatLunchOfferPreview).join("\n\n");
-        const quickReplies = lunchOffers.map(this.formatLunchOfferQuickReply);
+        const quickReplies = this.lunchOfferPagination.quickReplies();
 
         return [text, quickReplies];
     }
@@ -44,7 +37,6 @@ export class LunchOfferComposer {
         return [text, quickReplies];
     }
 
-    @boundMethod
     private formatLunchOfferPreview(lunchOffer: LunchOffer): string {
         const subtitle = this.formatSubtitle(lunchOffer);
 
@@ -55,7 +47,6 @@ export class LunchOfferComposer {
         return `${lunchOffer.business.name} ${subtitle}\n${foodsText}`;
     }
 
-    @boundMethod
     private formatLunchOfferDetailed(lunchOffer: LunchOffer): string {
         const tagComposer = new TagComposer(lunchOffer);
 
@@ -88,14 +79,5 @@ export class LunchOfferComposer {
         ]
             .filter(truthy)
             .join(", ");
-    }
-
-    @boundMethod
-    private formatLunchOfferQuickReply(lunchOffer: LunchOffer): QuickReply {
-        return {
-            content_type: ContentType.Text,
-            payload: LunchOfferPayload.fromLunchOffer(lunchOffer).toString(),
-            title: lunchOffer.business.name,
-        };
     }
 }
