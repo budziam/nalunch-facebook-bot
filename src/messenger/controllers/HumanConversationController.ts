@@ -14,7 +14,9 @@ export class HumanConversationController implements EventController {
     public async handle(client: Client, event: IncomingEvent): Promise<void> {
         const { message } = event;
 
-        if (equals(message.text, "tak")) {
+        const text = message.quick_reply ? message.quick_reply.payload : message.text;
+
+        if (equals(text, "tak")) {
             client.moveToState(ClientState.Start);
             // https://developers.facebook.com/docs/messenger-platform/handover-protocol/pass-thread-control
             await this.bus.send(

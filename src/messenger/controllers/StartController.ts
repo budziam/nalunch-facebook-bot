@@ -18,7 +18,7 @@ export class StartController implements EventController {
         );
         await this.bus.send(
             client,
-            `Pamiętaj, że zawsze możesz wrócić do początku wpisując "anuluj" 💡`,
+            `💡 Pamiętaj, że zawsze możesz wrócić do początku wpisując "anuluj"`,
         );
         await this.bus.send(client, {
             text: "A może chcesz zrobić coś innego?",

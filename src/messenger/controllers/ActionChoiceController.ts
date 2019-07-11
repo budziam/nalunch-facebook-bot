@@ -58,10 +58,12 @@ export class ActionChoiceController implements EventController {
                 {
                     content_type: ContentType.Text,
                     title: "Nie",
+                    payload: "nie",
                 },
                 {
                     content_type: ContentType.Text,
                     title: "Tak",
+                    payload: "tak",
                 },
             ],
         });
