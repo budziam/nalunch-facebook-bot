@@ -25,6 +25,7 @@
     "no-console": false,
     "no-duplicate-imports": [true, {"allow-namespace-imports": true}],
     "no-import-side-effect": false,
+    "no-inferrable-types": false,
     "no-magic-numbers": false,
     "no-parameter-properties": false,
     "no-unbound-method": false,
