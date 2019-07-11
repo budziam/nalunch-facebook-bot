@@ -9,13 +9,13 @@ import { WebhookHandler } from "./messenger/WebhookHandler";
 import { ChunkCollectionStore, ChunkStoreFactory, NaLunchApi } from "chunk";
 import { ErrorHandler } from "./ErrorHandler";
 import { FacebookApi } from "./api/FacebookApi";
+import { LunchOfferPaginationProvider } from "./lunchOffer/pagination/LunchOfferPaginationProvider";
 
 export const createContainer = (): Container => {
     env(`${__dirname}/../.env`);
 
     const container = new Container({
         autoBindInjectable: true,
-        defaultScope: "Singleton",
     });
 
     const config = new Config([
@@ -29,6 +29,10 @@ export const createContainer = (): Container => {
 
     container.bind(Container).toConstantValue(container);
     container.bind(Config).toConstantValue(config);
+    container
+        .bind(LunchOfferPaginationProvider)
+        .toSelf()
+        .inSingletonScope();
 
     container
         .bind(WebhookCollection)
@@ -40,14 +44,17 @@ export const createContainer = (): Container => {
                 ),
         );
 
-    container.bind(ChunkCollectionStore).toDynamicValue(() => {
-        const api = new NaLunchApi(Axios);
+    container
+        .bind(ChunkCollectionStore)
+        .toDynamicValue(() => {
+            const api = new NaLunchApi(Axios);
 
-        return new ChunkCollectionStore(
-            api,
-            new ChunkStoreFactory(api, container.get(ErrorHandler)),
-        );
-    });
+            return new ChunkCollectionStore(
+                api,
+                new ChunkStoreFactory(api, container.get(ErrorHandler)),
+            );
+        })
+        .inSingletonScope();
 
     container
         .bind(FacebookApi)

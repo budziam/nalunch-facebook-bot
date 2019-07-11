@@ -5,21 +5,16 @@ import { ClientProfile } from "./types";
 export enum ClientState {
     ActionChoice = 1,
     ListBusinesses = 2,
-    ShowBusiness = 3,
 }
 
 export class Client {
     public profile?: ClientProfile;
     public position?: Coordinates;
-    private readonly _psid: Psid;
+    public readonly psid: Psid;
     private _state: ClientState = ClientState.ActionChoice;
 
-    public constructor(psid: Psid) {
-        this._psid = psid;
-    }
-
-    public get psid(): Psid {
-        return this._psid;
+    public constructor(data: Partial<Client> = {}) {
+        Object.assign(this, data);
     }
 
     public get state(): ClientState {

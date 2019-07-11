@@ -2,7 +2,7 @@ import { Business, FacebookSource, LunchOffer, TimeInterval, WebsiteSource } fro
 import * as moment from "moment";
 // @ts-ignore
 import * as haversineDistance from "haversine-distance";
-import { Client } from "../client/Client";
+import { Client } from "../../client/Client";
 
 export class TagComposer {
     public constructor(private readonly lunchOffer: LunchOffer) {
@@ -59,7 +59,6 @@ export class TagComposer {
 
     public distance(client: Client): string {
         const meters = haversineDistance(client.position, this.business.location.coordinates);
-
         return `🚶‍ ${this.formatMeters(meters)}`;
     }
 

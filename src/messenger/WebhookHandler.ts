@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import * as winston from "winston";
 import { IncomingEvent } from "./types";
-import { ClientManager } from "../client/ClientManager";
+import { ClientProvider } from "../client/ClientProvider";
 import { ControllerFactory } from "./ControllerFactory";
 import { FacebookApi } from "../api/FacebookApi";
 import * as util from "util";
@@ -10,7 +10,7 @@ import * as util from "util";
 export class WebhookHandler {
     public constructor(
         private readonly api: FacebookApi,
-        private readonly clientManager: ClientManager,
+        private readonly clientProvider: ClientProvider,
         private readonly controllerFactory: ControllerFactory,
     ) {
         //
@@ -27,7 +27,7 @@ export class WebhookHandler {
         console.log(util.inspect(event, false, null, true));
 
         try {
-            const client = this.clientManager.get(event.sender.id);
+            const client = this.clientProvider.get(event.sender.id);
 
             if (!client.profile) {
                 client.profile = await this.api.getProfile(client.psid);

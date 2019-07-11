@@ -4,15 +4,17 @@ import { Client, ClientState } from "../../client/Client";
 import { Bus } from "../Bus";
 import { ACTION_CHOICE_REPLIES, ActionChoicePayload } from "../constants";
 import { equals } from "../utils";
-import { Coordinates } from "chunk";
-import { LunchOfferComposerFactory } from "../../lunchOffer/LunchOfferComposerFactory";
-import { LocationFinder } from "../../lunchOffer/LocationFinder";
+import { ChunkCollectionStore, Coordinates } from "chunk";
 import { ContentType } from "../../api/FacebookApi";
+import { LunchOfferComposerFactory } from "../../lunchOffer/composer/LunchOfferComposerFactory";
+import { LocationFinder } from "../../location/LocationFinder";
+import * as moment from "moment";
 
 @injectable()
 export class ActionChoiceController implements EventController {
     public constructor(
         private readonly bus: Bus,
+        private readonly chunkCollectionStore: ChunkCollectionStore,
         private readonly lunchOfferComposerFactory: LunchOfferComposerFactory,
     ) {
         //
@@ -63,8 +65,10 @@ export class ActionChoiceController implements EventController {
             "Kilka moich propozycji. Wybierz dany lokal, aby zobaczyć pełną ofertę.",
         );
 
+        await this.chunkCollectionStore.load(client.position, moment());
+
         const lunchOfferComposer = this.lunchOfferComposerFactory.create(client);
-        const [text, quickReplies] = await lunchOfferComposer.composeMany();
+        const [text, quickReplies] = lunchOfferComposer.composeMany();
 
         await this.bus.send(client, {
             text,
