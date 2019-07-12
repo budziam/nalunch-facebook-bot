@@ -62,6 +62,7 @@ export class FacebookApi {
                 id: psid,
             },
             target_app_id: 263902037430900,
+            metadata: "Nowa wiadomość",
         };
 
         await this.axios.post(url, data);
