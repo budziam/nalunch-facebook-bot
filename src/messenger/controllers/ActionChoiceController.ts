@@ -73,14 +73,17 @@ export class ActionChoiceController implements EventController {
         client.moveToState(ClientState.ListBusinesses);
         client.position = location;
 
-        await this.bus.send(
-            client,
-            "Kilka moich propozycji 👌 Wybierz dany lokal, aby zobaczyć pełną ofertę.",
-        );
-
-        await this.bus.showTypingOn(client);
-
-        await this.chunkCollectionStore.load(client.position, moment());
+        // Send informative message, then show spinner. Meanwhile load chunks.
+        // Wait until all tasks are done.
+        await Promise.all([
+            this.bus
+                .send(
+                    client,
+                    "Kilka moich propozycji 👌 Wybierz dany lokal, aby zobaczyć pełną ofertę.",
+                )
+                .then(() => this.bus.showTypingOn(client)),
+            this.chunkCollectionStore.load(client.position, moment()),
+        ]);
 
         const lunchOfferComposer = this.lunchOfferComposerFactory.create(client);
         const [text, quickReplies] = lunchOfferComposer.composeMany();
