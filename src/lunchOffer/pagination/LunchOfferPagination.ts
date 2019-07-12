@@ -55,7 +55,8 @@ export class LunchOfferPagination {
                 content_type: ContentType.Text,
                 payload: PaginationEnum.Prev,
                 title: "Poprzednie",
-                image_url: "https://static.xx.fbcdn.net/images/emoji.php/v9/t8a/1/32/1f448.png",
+                image_url:
+                    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/198/white-left-pointing-backhand-index_1f448.png",
             });
         }
 
@@ -72,7 +73,8 @@ export class LunchOfferPagination {
                 content_type: ContentType.Text,
                 payload: PaginationEnum.Next,
                 title: "Więcej",
-                image_url: "https://static.xx.fbcdn.net/images/emoji.php/v9/tb/1/32/1f449.png",
+                image_url:
+                    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/198/white-right-pointing-backhand-index_1f449.png",
             });
         }
 
