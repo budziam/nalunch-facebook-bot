@@ -78,6 +78,8 @@ export class ActionChoiceController implements EventController {
             "Kilka moich propozycji 👌 Wybierz dany lokal, aby zobaczyć pełną ofertę.",
         );
 
+        await this.bus.showTypingOn(client);
+
         await this.chunkCollectionStore.load(client.position, moment());
 
         const lunchOfferComposer = this.lunchOfferComposerFactory.create(client);

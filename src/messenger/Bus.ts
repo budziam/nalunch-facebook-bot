@@ -19,6 +19,10 @@ export class Bus {
         await this.api.sendMessage(client.psid, message);
     }
 
+    public async showTypingOn(client: Client): Promise<void> {
+        await this.api.typingOn(client.psid);
+    }
+
     public async passThreadControl(client: Client): Promise<void> {
         await this.api.passThreadControl(client.psid);
     }
