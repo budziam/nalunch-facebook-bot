@@ -3,15 +3,17 @@ import { Psid } from "../messenger/types";
 import { ClientProfile } from "./types";
 
 export enum ClientState {
-    ActionChoice = 1,
-    ListBusinesses = 2,
+    Start = 1,
+    ActionChoice = 2,
+    ListBusinesses = 3,
+    HumanConversation = 4,
 }
 
 export class Client {
     public profile?: ClientProfile;
     public position?: Coordinates;
     public readonly psid: Psid;
-    private _state: ClientState = ClientState.ActionChoice;
+    private _state: ClientState = ClientState.Start;
 
     public constructor(data: Partial<Client> = {}) {
         Object.assign(this, data);

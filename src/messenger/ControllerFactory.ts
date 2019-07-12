@@ -7,10 +7,11 @@ import { ReferralController } from "./controllers/ReferralController";
 import { PassControlController } from "./controllers/PassControlController";
 import { equals } from "./utils";
 import { SiemkaController } from "./controllers/SiemkaController";
-import { CancelController } from "./controllers/CancelController";
 import { UnknownMessageController } from "./controllers/UnknownMessageController";
 import { ActionChoiceController } from "./controllers/ActionChoiceController";
 import { BusinessChoiceController } from "./controllers/BusinessChoiceController";
+import { HumanConversationController } from "./controllers/HumanConversationController";
+import { StartController } from "./controllers/StartController";
 
 @injectable()
 export class ControllerFactory {
@@ -27,7 +28,11 @@ export class ControllerFactory {
             }
 
             if (equals(event.message.text, "anuluj")) {
-                return this.container.get(CancelController);
+                client.moveToState(ClientState.Start);
+            }
+
+            if (client.state === ClientState.Start) {
+                return this.container.get(StartController);
             }
 
             if (client.state === ClientState.ActionChoice) {
@@ -36,6 +41,10 @@ export class ControllerFactory {
 
             if (client.state === ClientState.ListBusinesses) {
                 return this.container.get(BusinessChoiceController);
+            }
+
+            if (client.state === ClientState.HumanConversation) {
+                return this.container.get(HumanConversationController);
             }
 
             return this.container.get(UnknownMessageController);

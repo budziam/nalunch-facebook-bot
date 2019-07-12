@@ -6,8 +6,7 @@ import { Client } from "../../client/Client";
 @injectable()
 export class PostbackController implements EventController {
     public async handle(client: Client, event: IncomingEvent): Promise<void> {
-        // TODO Implement
-        winston.error("Not implemented yet", {
+        winston.info("Postback", {
             client_psid: client.psid,
             event,
         });

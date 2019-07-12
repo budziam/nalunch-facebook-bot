@@ -55,6 +55,18 @@ export class FacebookApi {
         await this.axios.post(url, data);
     }
 
+    public async typingOn(psid: string): Promise<void> {
+        const url = this.to("/me/messages");
+        const data = {
+            recipient: {
+                id: psid,
+            },
+            sender_action: "typing_on",
+        };
+
+        await this.axios.post(url, data);
+    }
+
     public async passThreadControl(psid: string): Promise<void> {
         const url = this.to("/me/pass_thread_control");
         const data = {
@@ -62,6 +74,7 @@ export class FacebookApi {
                 id: psid,
             },
             target_app_id: 263902037430900,
+            metadata: "Nowa wiadomość",
         };
 
         await this.axios.post(url, data);

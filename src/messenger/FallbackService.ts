@@ -1,6 +1,7 @@
 import { Client, ClientState } from "../client/Client";
 import { Bus } from "./Bus";
 import { injectable } from "inversify";
+import { ACTION_CHOICE_REPLIES } from "./constants";
 
 @injectable()
 export class FallbackService {
@@ -10,6 +11,9 @@ export class FallbackService {
 
     public async unknownSituation(client: Client): Promise<void> {
         client.moveToState(ClientState.ActionChoice);
-        await this.bus.send(client, "Trochę się pogubiłem 😞 Zacznijmy od początku.");
+        await this.bus.send(client, {
+            text: "Trochę się pogubiłem 😞 Zacznijmy od początku. Jak mogę Ci pomóc?",
+            quick_replies: ACTION_CHOICE_REPLIES,
+        });
     }
 }
