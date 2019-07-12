@@ -12,7 +12,8 @@ export class FallbackService {
     public async unknownSituation(client: Client): Promise<void> {
         client.moveToState(ClientState.ActionChoice);
         await this.bus.send(client, {
-            text: "Trochę się pogubiłem 😞 Zacznijmy od początku. Jak mogę Ci pomóc?",
+            text:
+                "Trochę się pogubiłem 😞 Pamiętaj 💡 zawsze możesz wpisać 'anuluj', aby wrócić do początku. Jak mogę Ci pomóc?",
             quick_replies: ACTION_CHOICE_REPLIES,
         });
     }

@@ -16,10 +16,6 @@ export class StartController implements EventController {
             client,
             `Cześć ${client.profile.firstName}! Chętnie pomogę Ci znaleźć lunch 🍲 w Twojej okolicy. Wystarczy, że podasz mi swoją lokalizacje 📍`,
         );
-        await this.bus.send(
-            client,
-            `💡 Pamiętaj, że zawsze możesz wrócić do początku wpisując "anuluj"`,
-        );
         await this.bus.send(client, {
             text: "A może chcesz zrobić coś innego?",
             quick_replies: ACTION_CHOICE_REPLIES,
