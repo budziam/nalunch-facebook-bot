@@ -5,6 +5,7 @@ import { ClientProvider } from "../client/ClientProvider";
 import { ControllerFactory } from "./ControllerFactory";
 import { FacebookApi } from "../api/FacebookApi";
 import * as util from "util";
+import { ErrorHandler } from "../ErrorHandler";
 
 @injectable()
 export class WebhookHandler {
@@ -12,6 +13,7 @@ export class WebhookHandler {
         private readonly api: FacebookApi,
         private readonly clientProvider: ClientProvider,
         private readonly controllerFactory: ControllerFactory,
+        private readonly errorHandler: ErrorHandler,
     ) {
         //
     }
@@ -36,7 +38,7 @@ export class WebhookHandler {
             const controller = this.controllerFactory.create(client, event);
             await controller.handle(client, event);
         } catch (e) {
-            winston.error(e);
+            this.errorHandler.handle(e);
         }
     }
 }

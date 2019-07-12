@@ -32,6 +32,7 @@ export class ErrorHandler {
             const axiosError: AxiosError = error;
 
             winston.error("Request error", {
+                message: axiosError.message,
                 code: axiosError.code,
                 request: {
                     method: axiosError.config.method,
