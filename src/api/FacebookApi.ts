@@ -2,7 +2,7 @@ import { AxiosInstance } from "axios";
 import { injectable } from "inversify";
 import * as qs from "qs";
 import { ClientProfile } from "../client/types";
-import { trimSlashes } from "chunk";
+import { trimSlashes } from "nalunch-sdk";
 
 export interface OutcomingMessage {
     quick_replies?: QuickReply[];

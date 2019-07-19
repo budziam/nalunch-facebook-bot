@@ -4,7 +4,7 @@ import { Client, ClientState } from "../../client/Client";
 import { Bus } from "../Bus";
 import { ActionChoicePayload } from "../constants";
 import { equals } from "../utils";
-import { ChunkCollectionStore, Coordinates } from "chunk";
+import { ChunkCollectionStore, Coordinates } from "nalunch-sdk";
 import { ContentType } from "../../api/FacebookApi";
 import { LunchOfferComposerFactory } from "../../lunchOffer/composer/LunchOfferComposerFactory";
 import * as moment from "moment";

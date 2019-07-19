@@ -1,4 +1,4 @@
-import { DATE_FORMAT, EnrichedSlug, LunchOffer } from "chunk";
+import { DATE_FORMAT, EnrichedSlug, LunchOffer } from "nalunch-sdk";
 import * as moment from "moment";
 import { Moment } from "moment";
 

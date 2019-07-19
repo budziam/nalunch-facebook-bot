@@ -2,7 +2,7 @@ import { Container } from "inversify";
 import { setup } from "../utils";
 import { Client } from "../../src/client/Client";
 import * as moment from "moment";
-import { ChunkCollectionStore, EnrichedSlug } from "chunk";
+import { ChunkCollectionStore, EnrichedSlug } from "nalunch-sdk";
 import { Factory } from "../Factory";
 import { LunchOfferComposerFactory } from "../../src/lunchOffer/composer/LunchOfferComposerFactory";
 

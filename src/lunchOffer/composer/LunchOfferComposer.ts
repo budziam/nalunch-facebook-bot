@@ -1,4 +1,4 @@
-import { ChunkCollectionStore, Food, LunchOffer } from "chunk";
+import { ChunkCollectionStore, Food, LunchOffer } from "nalunch-sdk";
 import { boundClass } from "autobind-decorator";
 import { Client } from "../../client/Client";
 import { QuickReply } from "../../api/FacebookApi";

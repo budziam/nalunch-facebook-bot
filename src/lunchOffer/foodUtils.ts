@@ -1,4 +1,4 @@
-import { LunchOffer, Food } from "chunk";
+import { LunchOffer, Food } from "nalunch-sdk";
 
 export const chooseFoods = (lunchOffer: LunchOffer): Food[] => {
     const foods: Food[] = [];

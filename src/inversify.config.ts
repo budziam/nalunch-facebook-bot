@@ -6,7 +6,12 @@ import Axios from "axios";
 import { WebhookCollection } from "./http/controllers/WebhookCollection";
 import { Config, ConfigKey } from "./Config";
 import { WebhookHandler } from "./messenger/WebhookHandler";
-import { ChunkCollectionStore, ChunkStoreFactory, NaLunchApi } from "chunk";
+import {
+    ChunkCollectionStore,
+    ChunkStoreFactory,
+    NaLunchApi,
+    createChunkCollectionStore,
+} from "nalunch-sdk";
 import { ErrorHandler } from "./ErrorHandler";
 import { FacebookApi } from "./api/FacebookApi";
 import { LunchOfferPaginationProvider } from "./lunchOffer/pagination/LunchOfferPaginationProvider";
@@ -46,14 +51,7 @@ export const createContainer = (): Container => {
 
     container
         .bind(ChunkCollectionStore)
-        .toDynamicValue(() => {
-            const api = new NaLunchApi(Axios);
-
-            return new ChunkCollectionStore(
-                api,
-                new ChunkStoreFactory(api, container.get(ErrorHandler)),
-            );
-        })
+        .toDynamicValue(() => createChunkCollectionStore(container.get(ErrorHandler)))
         .inSingletonScope();
 
     container

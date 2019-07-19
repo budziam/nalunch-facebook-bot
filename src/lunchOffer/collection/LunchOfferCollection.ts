@@ -2,7 +2,7 @@ import { boundMethod } from "autobind-decorator";
 import * as moment from "moment";
 // @ts-ignore
 import * as haversineDistance from "haversine-distance";
-import { ChunkCollectionStore, compare, LunchOffer } from "chunk";
+import { ChunkCollectionStore, compare, LunchOffer } from "nalunch-sdk";
 import { Client } from "../../client/Client";
 
 const canTake = (lunchOffer: LunchOffer): boolean => fitsDate(lunchOffer) && !lunchOffer.isEmpty;

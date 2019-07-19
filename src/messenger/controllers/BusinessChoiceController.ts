@@ -3,7 +3,7 @@ import { EventController, IncomingEvent } from "../types";
 import { Client } from "../../client/Client";
 import { Bus } from "../Bus";
 import { FallbackService } from "../FallbackService";
-import { ChunkCollectionStore } from "chunk";
+import { ChunkCollectionStore } from "nalunch-sdk";
 import { LunchOfferPayload } from "../../lunchOffer/LunchOfferPayload";
 import { LunchOfferComposerFactory } from "../../lunchOffer/composer/LunchOfferComposerFactory";
 import { PaginationEnum } from "../../lunchOffer/pagination/LunchOfferPagination";
