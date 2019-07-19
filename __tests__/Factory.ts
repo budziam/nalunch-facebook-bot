@@ -11,7 +11,7 @@ import {
     Publication,
     slugify,
     Location,
-} from "chunk";
+} from "nalunch-sdk";
 import * as moment from "moment";
 
 // TODO Use some library for creating tests entities instead of reinventing a wheel

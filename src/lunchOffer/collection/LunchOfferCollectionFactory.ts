@@ -1,4 +1,4 @@
-import { ChunkCollectionStore } from "chunk";
+import { ChunkCollectionStore } from "nalunch-sdk";
 import { injectable } from "inversify";
 import { Client } from "../../client/Client";
 import { LunchOfferCollection } from "./LunchOfferCollection";

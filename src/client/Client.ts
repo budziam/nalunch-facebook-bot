@@ -1,4 +1,4 @@
-import { Coordinates } from "chunk";
+import { Coordinates } from "nalunch-sdk";
 import { Psid } from "../messenger/types";
 import { ClientProfile } from "./types";
 

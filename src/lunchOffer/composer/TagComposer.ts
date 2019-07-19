@@ -1,4 +1,4 @@
-import { Business, FacebookSource, LunchOffer, TimeInterval, WebsiteSource } from "chunk";
+import { Business, FacebookSource, LunchOffer, TimeInterval, WebsiteSource } from "nalunch-sdk";
 import * as moment from "moment";
 // @ts-ignore
 import * as haversineDistance from "haversine-distance";

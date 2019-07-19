@@ -1,6 +1,6 @@
 import createMockInstance from "jest-create-mock-instance";
 import { Client } from "../../../src/client/Client";
-import { LunchOffer } from "chunk";
+import { LunchOffer } from "nalunch-sdk";
 import { Factory } from "../../Factory";
 import {
     LunchOfferPagination,

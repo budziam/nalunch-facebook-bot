@@ -1,4 +1,4 @@
-import { LunchOffer } from "chunk";
+import { LunchOffer } from "nalunch-sdk";
 import { InvalidArgumentException } from "../../exceptions/InvalidArgumentException";
 import { ContentType, QuickReply } from "../../api/FacebookApi";
 import { LunchOfferPayload } from "../LunchOfferPayload";
