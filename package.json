@@ -30,7 +30,7 @@
     "jest-create-mock-instance": "^1.1.0",
     "jest-junit": "^6.4.0",
     "lint-staged": "^8.1.5",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "nalunch-sdk": "^1.1.0",
     "node-env-file": "^0.1.8",
     "node-mocks-http": "^1.7.5",
